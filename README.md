@@ -648,7 +648,9 @@ shortlived RRSIGs]{style="color: rgb(51,153,102);"}
     blah.hash \| xxd -p -c 64\
     Hint: get the token name and PIN from ods conf.xml (could use
     \--pin, but unsafe on cli)
--   **Exercise \"pkcs11-tool: gimme some keys & lemme
+
+-----------------------
+## Exercise \"pkcs11-tool: gimme some keys & lemme
     in\"\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\--**
 -   pkcs11-tool \--module /usr/lib/softhsm/libsofthsm2.so \--token
     Token1 \--keypairgen \--id 1 \--label ec256\_1 \--key-type
@@ -677,8 +679,9 @@ shortlived RRSIGs]{style="color: rgb(51,153,102);"}
     in useful format)
 -   Advice: even though you gave your key a label, please always use
     \--id, I\'v see weird fails when using \--label
--   **Exercise \"pkcs11-tool: start signing
-    already!\"\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\--**
+
+-------------
+## Exercise \"pkcs11-tool: start signing already!\"
 -   echo -n \'nl.                  3600    IN      SOA     ns1.dns.nl.
     hostmaster.domain-registry.nl. 2023110219 3600 600 2419200 600\' \>
     soa.txt\
@@ -709,8 +712,9 @@ shortlived RRSIGs]{style="color: rgb(51,153,102);"}
     rsa.der\
     openssl dgst -verify rsa.der -sha512 -signature soa\_rsa.sig
     soa.hash
--   **Exercise \"Symmetry\"
-    \-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\--**
+
+------------------
+## Exercise \"Symmetry\"
 -   With pkcs11-tool version 0.22 I never managed to use symmetrical
     encryption (e.g. AES), it is not supported, even though the
     HSM/Token does report it and I can create an AES key with
@@ -728,7 +732,9 @@ shortlived RRSIGs]{style="color: rgb(51,153,102);"}
     pkcs11-tool \--module /usr/lib/softhsm/libsofthsm2.so \--token
     Token1 \--pin 0000 \--decrypt \--id 13 -m AES-CBC-PAD \--iv
     \"00000000000000000000000000000000\" -i encrypted\_file.data
--   **Optional Exercise \"Trusted Platform Module\"**
+
+---------------
+## Optional Exercise \"Trusted Platform Module\"**
 -   Warning: this does not work in a standard VM or LXD container, so
     you would have to install software on your host system, proceed only
     if you are willing to do this.
@@ -753,8 +759,9 @@ shortlived RRSIGs]{style="color: rgb(51,153,102);"}
     pkcs11-tool \--module
     /usr/lib/x86\_64-linux-gnu/libtpm2\_pkcs11.so.1 \--label=\"testing\"
     \--test \--pin 0000
--   **Last Exercise \"Clean up after yourself
-    please\"\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\--**
+
+----------
+## Last Exercise \"Clean up after yourself please\"
 -   pkcs11-tool \--module /usr/lib/softhsm/libsofthsm2.so \--token
     Token1 \--pin 0000 \--delete-object \--type secrkey \--label
     aes16\_1 \--id 13  (if used without label = first found or maybe
@@ -767,11 +774,10 @@ shortlived RRSIGs]{style="color: rgb(51,153,102);"}
     \--type privkey
 -   softhsm2-util \--delete-token \--token \'Token1\'
 -   should you have initialized your TPM: tpm2\_ptool destroy \--pid
-    \<your id\> → error → rm the dir mentioned in the error (WARNING
-    make sure you should actually be doing this)
--   \-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\--
+    \<your id\> → error → rm the dir mentioned in the error (***WARNING make sure you should actually be doing this***)
 
-Optional Demo: a knot instance using SoftHSM, fast rolling and shortlived RRSIGs.
+---------------------
+## Optional Demo: a knot instance using SoftHSM, fast rolling and shortlived RRSIGs.
 ```
 lxc delete knothsm01
 lxc launch images:debian/12 knothsm01
