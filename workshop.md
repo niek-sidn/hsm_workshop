@@ -8,20 +8,20 @@ Aim of this Workshop
 --------------------
 
 Mid 2023 people started showing interest in some sort of HSM
-\"Course\".\
-Since then even more people got interested every time we mentioned it.\
+\"Course\".
+Since then even more people got interested every time we mentioned it.
 Specifically it would have to be some hands-on thing, because IT-people
-cannot live on theory alone.\
-So \"Course\" became \"Workshop\".\
+cannot live on theory alone.
+So \"Course\" became \"Workshop\".
 People asked for a focus on general HSM knowledge, not on the
-Thales/Safenet/Luna devices we employ.\
+Thales/Safenet/Luna devices we employ.
 Also \"HSM and Cloud\" should be a thing in this workshop people told
-us.\
+us.
 The workshop is in English (well\... Dunglish) because our Friends from
-InternetStiftelsen want to join us.\
-So the purpose of the workshop became:\
-- getting to know what an HSM is, and what you can do with it.\
-- throwing more than a few commands at an HSM to see what happens.\
+InternetStiftelsen want to join us.
+So the purpose of the workshop became:
+- getting to know what an HSM is, and what you can do with it.
+- throwing more than a few commands at an HSM to see what happens.
 - after this workshop you should have gained some confidence when
 working with an HSM or when researching HSM stuff on your own. 
 
