@@ -1,15 +1,6 @@
 Invitation and getting ready
 ============================
 
-blah
-------
-
-##hallo
-
-hallo
-
-##hallo
-
 Aim of this Workshop
 --------------------
 
