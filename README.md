@@ -778,11 +778,17 @@ shortlived RRSIGs]{style="color: rgb(51,153,102);"}
 
 ---------------------
 ## Optional Demo: a knot instance using SoftHSM, fast rolling and shortlived RRSIGs.
+
+### Prep
 ```
 lxc delete knothsm01
 lxc launch images:debian/12 knothsm01
 
 lxc shell knothsm01
+```
+
+### SoftHSM
+```
 apt install -y less man softhsm2 opensc knot knot-dnssecutils knot-dnsutils
 
 echo "set mouse-=a" > ~/.vimrc    # Make vim behave normally when copy-pasting. Debian-only thing?
@@ -790,7 +796,10 @@ echo "set mouse-=a" > ~/.vimrc    # Make vim behave normally when copy-pasting. 
 usermod -G softhsm knot
 su - knot -s /bin/bash -c 'softhsm2-util --init-token --free --label knot --pin 0000 --so-pin 1234'
 su - knot -s /bin/bash -c 'pkcs11-tool --module /usr/lib/softhsm/libsofthsm2.so --list-token-slots'
+```
 
+### knot.conf
+```
 vim /etc/knot/knot.conf
 ------------------------------------------
 server:
@@ -851,7 +860,10 @@ zone:
   - domain: example.net
 ------------------------------------------
 knotc conf-check
+```
 
+### /var/lib/knot/example.com.zone
+```
 vim /var/lib/knot/example.com.zone /var/lib/knot/example.net.zone
 ----------------
 $ORIGIN example.com.
@@ -863,7 +875,10 @@ ns1     A       127.0.0.1
 chown knot:knot /var/lib/knot/example.*.zone
 kzonecheck -v --dnssec off /var/lib/knot/example.com.zone
 kzonecheck -v --dnssec off /var/lib/knot/example.net.zone
- 
+```
+
+### knot start
+```
 systemctl restart knot
 systemctl status knot
 journalctl -fexu knot.service
@@ -874,7 +889,10 @@ su - knot -s /bin/bash -c 'pkcs11-tool --module /usr/lib/softhsm/libsofthsm2.so 
 
 su - knot -s /bin/bash -c '/usr/sbin/keymgr example.com list'
 su - knot -s /bin/bash -c '/usr/sbin/keymgr example.com list -e'
- 
+```
+
+### signing
+```
 knotc zone-reload example.com
 systemctl status knot
 kzonecheck -v --dnssec on /var/lib/knot/example.com.zone
@@ -892,8 +910,10 @@ knotc zone-reload example.com
 kdig @::1 +norec +dnssec +cd +multi soa example.com
 kdig @::1 +norec +dnssec +cd +multi www.example.com
 kdig @::1 +norec +dnssec +cd +multi nonexistant.example.com
+```
 
-------------------------------------
+### key import from externally created keys
+```
 From Knot docu:
 Import key pair in HSM
 openssl rsa -outform DER -in c4eae5dea3ee8c15395680085c515f2ad41941b6.pem \
@@ -911,7 +931,7 @@ pkcs11-tool --module /usr/local/lib/pkcs11.so -login \
   --usage-sign --id c4eae5dea3ee8c15395680085c515f2ad41941b6
 ```
 
-OpenDNSsec conf.xml example:
+### OpenDNSsec conf.xml example:
 ```
 <Configuration>
         <RepositoryList>
