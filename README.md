@@ -1,7 +1,3 @@
-Table of Contents
-=================
-
-
 Invitation and getting ready
 ============================
 
