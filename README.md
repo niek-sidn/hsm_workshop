@@ -553,8 +553,7 @@ shortlived RRSIGs]{style="color: rgb(51,153,102);"}
 # Workshop exercises:
 
 ------------------------
--   **Exercise \"Random in bash\"
-    \-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\--**
+## Exercise \"Random in bash\"
 -   random: bash random commands use (non-blocking) /dev/urandom, not
     real random.\
     Run: RANDOM=13 && echo \$RANDOM  (you got 21880, didn\'t you?)\
@@ -575,21 +574,24 @@ shortlived RRSIGs]{style="color: rgb(51,153,102);"}
     pkcs11-tool \--module /usr/lib/softhsm/libsofthsm2.so \--token
     Token1 \--generate-random 64 \| xxd -c 64 -p (see random from an
     HSM)
--   **Exercise \"Finland tastes salty\"
-    \-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\--**
+
+----------------
+## Exercise \"Finland tastes salty\"
 -   Issue this command (or your OS\'s equivalent): kdig +dnssec +multi
     nsec3param fi. \@1.1.1.1
 -   now do .nl
 -   now do .se ( Hint: if the penny doesn\'t drop, do
     blah-nonexistant.se. (no nsec3 in .se, so no salt))
--   **Exercise \"**Cyberchef, your tool for all things crypto\"
-    \-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\--
+
+---------------
+## Exercise \"**Cyberchef, your tool for all things crypto\"
 -   Visit: [https://cyberchef.io/\#recipe=AES\_Encrypt(%7B\'option\':\'UTF8\',\'string\':\'my\_key1234567890\'%7D,%7B\'option\':\'UTF8\',\'string\':\'0000000000000000\'%7D,\'CBC\',\'Raw\',\'Hex\',%7B\'option\':\'Hex\',\'string\':\'\'%7D)&input=VGhpcyBpcyB0b3Agc2VjcmV0ISEh](https://cyberchef.io/#recipe=AES_Encrypt(%7B)
 -   Now change the IV, but not the key and input.
 -   Have a look at the left, see what CyberChef can do for you. Now try
     something new like Base64 and unBase64. (Hint: drag & drop)
--   **Exercise \"Introducing SoftHSM2 by NLnet Labs\"
-    \-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\--**
+
+---------------
+  ## Exercise \"Introducing SoftHSM2 by NLnet Labs\"
 -   softhsm: you need to use sudo to use softhsm, if not softhsm only
     visible by user.
 -   softhsm: softhsm2-util \--show-slots (always an empty slot available
@@ -608,7 +610,9 @@ shortlived RRSIGs]{style="color: rgb(51,153,102);"}
 -   softhsm: there is an sqlite option, probably recompile needed.
 -   softhsm2-util \--delete-token \--token Token1 (get rid of token, for
     deleting objects in the token see below)
--   **Exercise \"Introducing pkcs11-tool from opensc package &
+
+--------------------
+## Exercise \"Introducing pkcs11-tool from opensc package &
     hash\"\-\-\-\-\-\-\-\-\-\-\-\-\-\--**
 -   It\'s far from complete, version 0.23. Good enough for this
     workshop. If you\'re serious you\'d better use the pkcs11 libraries
