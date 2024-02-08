@@ -809,74 +809,149 @@ Workshop exercises:
 Optional Demo: a knot instance using SoftHSM, fast rolling and shortlived RRSIGs.
 ---------------------------------------------------------------------------------
 
-bash true lxc delete knothsm01 lxc launch images:debian/12 knothsm01 lxc
-shell knothsm01 apt install -y less man softhsm2 opensc knot
-knot-dnssecutils knot-dnsutils echo \"set mouse-=a\" \> \~/.vimrc \#
-Make vim behave normally when copy-pasting. Debian-only thing? usermod
--G softhsm knot su - knot -s /bin/bash -c \'softhsm2-util \--init-token
-\--free \--label knot \--pin 0000 \--so-pin 1234\' su - knot -s
-/bin/bash -c \'pkcs11-tool \--module /usr/lib/softhsm/libsofthsm2.so
-\--list-token-slots\' vim /etc/knot/knot.conf
-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\--
-server: rundir: \"/run/knot\" user: knot:knot automatic-acl: on listen:
-\[ 127.0.0.1\@53, ::1\@53 \] log: - target: syslog any: info database:
-storage: \"/var/lib/knot\" keystore: - id: SoftHSM backend: pkcs11
-config: \"pkcs11:token=knot;pin-value=0000
-/usr/lib/softhsm/libsofthsm2.so\" key-label: true submission: - id:
-unsafe timeout: 10s policy: - id: automatic-fast manual: off keystore:
-SoftHSM algorithm: ecdsap256sha256 ksk-lifetime: 60m zsk-lifetime: 30m
-propagation-delay: 2s delete-delay: 10m dnskey-ttl: 300s zone-max-ttl:
-300s rrsig-lifetime: 15m rrsig-refresh: 7m rrsig-pre-refresh: 3m
-ksk-submission: unsafe cds-cdnskey-publish: none - id: manual manual: on
-keystore: SoftHSM remote: template: - id: default storage:
-\"/var/lib/knot\" file: \"%s.zone\" dnssec-signing: on dnssec-policy:
-automatic-fast zone: - domain: example.com dnssec-policy: manual -
-domain: example.net
-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\--
-knotc conf-check vim /var/lib/knot/example.com.zone
-/var/lib/knot/example.net.zone \-\-\-\-\-\-\-\-\-\-\-\-\-\-\-- \$ORIGIN
-example.com. \$TTL 5m @ SOA ns1 hostmaster 1000 5m 1m 10m 4m NS ns1 ns1
-A 127.0.0.1 \-\-\-\-\-\-\-\-\-\-\-\-\-\-\-- chown knot:knot
-/var/lib/knot/example.\*.zone kzonecheck -v \--dnssec off
-/var/lib/knot/example.com.zone kzonecheck -v \--dnssec off
-/var/lib/knot/example.net.zone systemctl restart knot systemctl status
-knot journalctl -fexu knot.service su - knot -s /bin/bash -c
-\'/usr/sbin/keymgr example.com. generate algorithm=13 ksk=yes zsk=no\'
-su - knot -s /bin/bash -c \'/usr/sbin/keymgr example.com. generate
-algorithm=13 ksk=no zsk=yes\' su - knot -s /bin/bash -c \'pkcs11-tool
-\--module /usr/lib/softhsm/libsofthsm2.so \--list-objects \--pin 0000\'
-su - knot -s /bin/bash -c \'/usr/sbin/keymgr example.com list\' su -
-knot -s /bin/bash -c \'/usr/sbin/keymgr example.com list -e\' knotc
-zone-reload example.com systemctl status knot kzonecheck -v \--dnssec on
-/var/lib/knot/example.com.zone cat /var/lib/knot/example.com.zone knotc
-zone-status knotc zone-read example.com @ SOA kdig @::1 +norec +dnssec
-+cd +multi soa example.com kdig @::1 +norec +dnssec +cd +multi dnskey
-example.com knotc zone-backup -b +backupdir /var/tmp/backup\_example.com
-+journal example.com. vim /var/lib/knot/example.com.zone (make some
-edit, e.g. add www.example.com) knotc zone-reload example.com kdig @::1
-+norec +dnssec +cd +multi soa example.com kdig @::1 +norec +dnssec +cd
-+multi www.example.com kdig @::1 +norec +dnssec +cd +multi
-nonexistant.example.com
-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\--
-From Knot docu: Import key pair in HSM openssl rsa -outform DER -in
-c4eae5dea3ee8c15395680085c515f2ad41941b6.pem \\ -out
-c4eae5dea3ee8c15395680085c515f2ad41941b6.priv.der openssl rsa -outform
-DER -in c4eae5dea3ee8c15395680085c515f2ad41941b6.pem \\ -out
-c4eae5dea3ee8c15395680085c515f2ad41941b6.pub.der -pubout pkcs11-tool
-\--module /usr/local/lib/pkcs11.so \--login \\ \--write-object
-c4eae5dea3ee8c15395680085c515f2ad41941b6.priv.der \--type privkey \\
-\--usage-sign \--id c4eae5dea3ee8c15395680085c515f2ad41941b6 pkcs11-tool
-\--module /usr/local/lib/pkcs11.so -login \\ \--write-object
-c4eae5dea3ee8c15395680085c515f2ad41941b6.pub.der \--type pubkey \\
-\--usage-sign \--id c4eae5dea3ee8c15395680085c515f2ad41941b6
+    lxc delete knothsm01
+    lxc launch images:debian/12 knothsm01
 
-\
+    lxc shell knothsm01
+    apt install -y less man softhsm2 opensc knot knot-dnssecutils knot-dnsutils
 
-OpenDNSsec conf.xml example:
+    echo "set mouse-=a" > ~/.vimrc    # Make vim behave normally when copy-pasting. Debian-only thing?
 
-true \<Configuration\> \<RepositoryList\> \<Repository
-name=\"SoftHSM\"\> \<Module\>/usr/lib/softhsm/libsofthsm2.so\</Module\>
-\<TokenLabel\>OpenDNSSEC\</TokenLabel\> \<PIN\>1234\</PIN\>
-\</Repository\> \</RepositoryList\>
+    usermod -G softhsm knot
+    su - knot -s /bin/bash -c 'softhsm2-util --init-token --free --label knot --pin 0000 --so-pin 1234'
+    su - knot -s /bin/bash -c 'pkcs11-tool --module /usr/lib/softhsm/libsofthsm2.so --list-token-slots'
 
-\
+    vim /etc/knot/knot.conf
+    ------------------------------------------
+    server:
+        rundir: "/run/knot"
+        user: knot:knot
+        automatic-acl: on
+        listen: [ 127.0.0.1@53, ::1@53 ]
+
+    log:
+      - target: syslog
+        any: info
+
+    database:
+        storage: "/var/lib/knot"
+
+    keystore:
+       - id: SoftHSM
+         backend: pkcs11
+         config: "pkcs11:token=knot;pin-value=0000 /usr/lib/softhsm/libsofthsm2.so"
+         key-label: true
+
+    submission:
+      - id: unsafe
+        timeout: 10s
+
+    policy:
+      - id: automatic-fast
+        manual: off
+        keystore: SoftHSM
+        algorithm: ecdsap256sha256
+        ksk-lifetime: 60m
+        zsk-lifetime: 30m
+        propagation-delay: 2s
+        delete-delay: 10m
+        dnskey-ttl: 300s
+        zone-max-ttl: 300s
+        rrsig-lifetime: 15m
+        rrsig-refresh: 7m
+        rrsig-pre-refresh: 3m
+        ksk-submission: unsafe
+        cds-cdnskey-publish: none
+      - id: manual
+        manual: on
+        keystore: SoftHSM
+
+    remote:
+
+    template:
+      - id: default
+        storage: "/var/lib/knot"
+        file: "%s.zone"
+        dnssec-signing: on
+        dnssec-policy: automatic-fast
+
+    zone:
+      - domain: example.com
+        dnssec-policy: manual
+      - domain: example.net
+    ------------------------------------------
+    knotc conf-check
+
+    vim /var/lib/knot/example.com.zone /var/lib/knot/example.net.zone
+    ----------------
+    $ORIGIN example.com.
+    $TTL 5m
+    @       SOA     ns1 hostmaster 1000 5m 1m 10m 4m
+            NS      ns1
+    ns1     A       127.0.0.1
+    ----------------
+    chown knot:knot /var/lib/knot/example.*.zone
+    kzonecheck -v --dnssec off /var/lib/knot/example.com.zone
+    kzonecheck -v --dnssec off /var/lib/knot/example.net.zone
+     
+    systemctl restart knot
+    systemctl status knot
+    journalctl -fexu knot.service
+     
+    su - knot -s /bin/bash -c '/usr/sbin/keymgr example.com. generate algorithm=13 ksk=yes zsk=no'
+    su - knot -s /bin/bash -c '/usr/sbin/keymgr example.com. generate algorithm=13 ksk=no zsk=yes'
+    su - knot -s /bin/bash -c 'pkcs11-tool --module /usr/lib/softhsm/libsofthsm2.so --list-objects --pin 0000'
+
+    su - knot -s /bin/bash -c '/usr/sbin/keymgr example.com list'
+    su - knot -s /bin/bash -c '/usr/sbin/keymgr example.com list -e'
+     
+    knotc zone-reload example.com
+    systemctl status knot
+    kzonecheck -v --dnssec on /var/lib/knot/example.com.zone
+    cat /var/lib/knot/example.com.zone
+
+    knotc zone-status
+    knotc zone-read example.com @ SOA
+    kdig @::1 +norec +dnssec +cd +multi soa example.com
+    kdig @::1 +norec +dnssec +cd +multi dnskey example.com
+
+    knotc zone-backup -b +backupdir /var/tmp/backup_example.com +journal example.com.
+    vim /var/lib/knot/example.com.zone (make some edit, e.g. add www.example.com)
+    knotc zone-reload example.com
+
+    kdig @::1 +norec +dnssec +cd +multi soa example.com
+    kdig @::1 +norec +dnssec +cd +multi www.example.com
+    kdig @::1 +norec +dnssec +cd +multi nonexistant.example.com
+
+    ------------------------------------
+    From Knot docu:
+    Import key pair in HSM
+    openssl rsa -outform DER -in c4eae5dea3ee8c15395680085c515f2ad41941b6.pem \
+      -out c4eae5dea3ee8c15395680085c515f2ad41941b6.priv.der
+
+    openssl rsa -outform DER -in c4eae5dea3ee8c15395680085c515f2ad41941b6.pem \
+      -out c4eae5dea3ee8c15395680085c515f2ad41941b6.pub.der -pubout
+
+    pkcs11-tool --module /usr/local/lib/pkcs11.so --login \
+      --write-object c4eae5dea3ee8c15395680085c515f2ad41941b6.priv.der --type privkey \
+      --usage-sign --id c4eae5dea3ee8c15395680085c515f2ad41941b6
+
+    pkcs11-tool --module /usr/local/lib/pkcs11.so -login \
+      --write-object c4eae5dea3ee8c15395680085c515f2ad41941b6.pub.der --type pubkey \
+      --usage-sign --id c4eae5dea3ee8c15395680085c515f2ad41941b6
+
+      
+
+
+    OpenDNSsec conf.xml example:
+
+      
+            
+                    
+                            /usr/lib/softhsm/libsofthsm2.so
+                            OpenDNSSEC
+                            1234
+                    
+            
+
+      
