@@ -940,10 +940,9 @@ Optional Demo: a knot instance using SoftHSM, fast rolling and shortlived RRSIGs
       --write-object c4eae5dea3ee8c15395680085c515f2ad41941b6.pub.der --type pubkey \
       --usage-sign --id c4eae5dea3ee8c15395680085c515f2ad41941b6
 
-      
+\
 
-
-    OpenDNSsec conf.xml example:
+OpenDNSsec conf.xml example:
 
       
             
@@ -954,4 +953,4 @@ Optional Demo: a knot instance using SoftHSM, fast rolling and shortlived RRSIGs
                     
             
 
-      
+\
