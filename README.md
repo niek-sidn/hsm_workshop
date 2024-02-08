@@ -28,11 +28,11 @@ Setup of the workshop
 Theory mixed with commandline work to make it less boring and get
 experienced (sorry, Jimi Hendrix was playing while writing this)\
 For the hands-on work you can use any host you can install software
-packages on and that has a shell.\
+packages on and that has a shell.
 I\'m using Debian 12 Linux and bash on a LXD container on my laptop. You
-choose your own, but as always ymmv.\
+choose your own, but as always ymmv.
 If you got confused already, please ask one of the experienced people to
-help you.\
+help you.
 I can provide a linux shell if you want, please ask me. You\'ll still
 need Putty or equivalent ssh-client to use it.
 
