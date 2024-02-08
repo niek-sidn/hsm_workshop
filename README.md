@@ -612,8 +612,7 @@ shortlived RRSIGs]{style="color: rgb(51,153,102);"}
     deleting objects in the token see below)
 
 --------------------
-## Exercise \"Introducing pkcs11-tool from opensc package &
-    hash\"\-\-\-\-\-\-\-\-\-\-\-\-\-\--**
+## Exercise \"Introducing pkcs11-tool from opensc package & hash\"
 -   It\'s far from complete, version 0.23. Good enough for this
     workshop. If you\'re serious you\'d better use the pkcs11 libraries
     of your favorite programming language.
@@ -650,8 +649,7 @@ shortlived RRSIGs]{style="color: rgb(51,153,102);"}
     \--pin, but unsafe on cli)
 
 -----------------------
-## Exercise \"pkcs11-tool: gimme some keys & lemme
-    in\"\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\--**
+## Exercise \"pkcs11-tool: gimme some keys & lemme in\"
 -   pkcs11-tool \--module /usr/lib/softhsm/libsofthsm2.so \--token
     Token1 \--keypairgen \--id 1 \--label ec256\_1 \--key-type
     EC:secp256r1 (error, not logged in)
@@ -715,20 +713,16 @@ shortlived RRSIGs]{style="color: rgb(51,153,102);"}
 
 ------------------
 ## Exercise \"Symmetry\"
--   With pkcs11-tool version 0.22 I never managed to use symmetrical
-    encryption (e.g. AES), it is not supported, even though the
-    HSM/Token does report it and I can create an AES key with
-    pkcs11-tool just fine. \
-    pkcs11-tool: unrecognized option \'\--encrypt\'. \
+-   With pkcs11-tool version 0.22 I never managed to use symmetrical encryption (e.g. AES), it is not supported, even though the
+    HSM/Token does report it and I can create an AES key with pkcs11-tool just fine.
+    pkcs11-tool: unrecognized option \'\--encrypt\'.
     Version 0.23 does support it. If you have 0.23:
--   echo \'Top secret information\' \> blah.txt\
-    pkcs11-tool \--module /usr/lib/softhsm/libsofthsm2.so \--token
-    Token1 \--keygen \--key-type AES:16 \--label aes16\_1 \--id 13
-    \--pin 0000\
+-   echo \'Top secret information\' \> blah.txt
+    pkcs11-tool \--module /usr/lib/softhsm/libsofthsm2.so \--token Token1 \--keygen \--key-type AES:16 \--label aes16\_1 \--id 13 \--pin 0000
     pkcs11-tool \--module /usr/lib/softhsm/libsofthsm2.so \--token
     Token1 \--pin 0000 \--encrypt \--id 13 -m AES-CBC-PAD \--iv
     \"00000000000000000000000000000000\" -i blah.txt -o
-    encrypted\_file.data\
+    encrypted\_file.data
     pkcs11-tool \--module /usr/lib/softhsm/libsofthsm2.so \--token
     Token1 \--pin 0000 \--decrypt \--id 13 -m AES-CBC-PAD \--iv
     \"00000000000000000000000000000000\" -i encrypted\_file.data
