@@ -1,6 +1,7 @@
-# Invitation and getting ready
 ------------------------------
+# Invitation and getting ready
 
+------------------------------
 ## Aim of this Workshop
 Mid 2023 people started showing interest in some sort of HSM
 \"Course\".
@@ -16,8 +17,8 @@ So the purpose of the workshop became:
 - throwing more than a few commands at an HSM to see what happens.
 - after this workshop you should have gained some confidence when
 working with an HSM or when researching HSM stuff on your own.
------------------
 
+-----------------
 ## Setup of the workshop
 Theory mixed with commandline work to make it less boring and get
 experienced (sorry, Jimi Hendrix was playing while writing this)\
@@ -43,7 +44,6 @@ Windows Installer for OpenSC: <https://github.com/OpenSC/OpenSC>\
 Mac: ???
 
 -------------------
-
 ## Prior knowledge
 There is no time to explain things beyond HSM\'s, so you should:
 
@@ -53,10 +53,11 @@ There is no time to explain things beyond HSM\'s, so you should:
     key-pair.\
     (that is basically what DNSsec signing is all about).
 -   use youtube if you lack this knowledge.
+
 -------------------------
-
-
 # Slides
+
+------------------
 ## What is an HSM?
 -   HSM stands for \"hardware security module\", and it is an appliance
     (maybe application) specialized in doing cryptographic operations.
@@ -78,8 +79,8 @@ There is no time to explain things beyond HSM\'s, so you should:
     programmatic interface/API.
 -   Under the hood it probably all gets translated to some API or Socket
     call.
----------------------
 
+---------------------
 ## What an HSM is not
 -   It does crypto and it does object storage, nothing more.
 -   In general, an HSM is not a device that will hand over any secrets
@@ -118,16 +119,17 @@ There is no time to explain things beyond HSM\'s, so you should:
     a key-pair.\
     A roll-over to the HSM is just somebody asking to use a different
     key than before.
---------------------
 
+--------------------
 ## Who uses HSM\'s?
 -   we do  
 -   but mostly banks and other payment processors.
 -   also: Certificate Authorities (CA\'s, think LetsEncrypt, Sectigo,
     DigiNotar)
-In short: Organisations that need to prove their secrets are actually secret.     
----------------------
 
+In short: Organisations that need to prove their secrets are actually secret.     
+
+---------------------
 ## HSM Formfactors
 An HSM can be:
 -   A networked hardware appliance like the Thales Luna
@@ -144,7 +146,6 @@ Platform Module) inside it, these have a lot of similarities with an
 HSM.
 
 --------------------
-
 ## Capacities
 Different HSM\'s do or do not have:
 
@@ -174,7 +175,6 @@ In most cases, an HSM is contacted through an .so / module (let\'s call
 it a \"driver\")
 
 ---------------------------
-
 ## What\'s in it (for us)?
 At a minimum, an HSM appliance should contain a crypto module.\
 This is a closed-off \'mini computer\' with its own CPU and RAM and
@@ -200,7 +200,6 @@ Especially when creating keys: a predictable key maybe leads to the
 worst false sense of security. 
 
 -----------------------------------
-
 ## Salting
 But also when signing/encrypting some random is sometimes needed! This
 is commonly called a \'salt\' or an \'initialization vector\'.\
@@ -246,7 +245,6 @@ AES is a salt. ]{style="color: rgb(32,33,34);"} [\
 things crypto]{style="color: rgb(0,128,0);"}
 
 ------------------------
-
 ## Why HSM?
 Arguments for using an HSM:
 
@@ -265,11 +263,9 @@ Arguments for using an HSM:
     the HSM does all this for you and auditors are familiar with them.
 -   DNSsec and TLS rely heavily on trust!
 
-Why NOT an HSM?
----------------
-
+---------------------
+## Why NOT an HSM?
 Arguments against using an HSM:
-
 -   complex roles (?!?How many times you say I need to enter the PIN for
     the blue token!?!)
 -   complex backup procedures
@@ -283,9 +279,8 @@ Arguments against using an HSM:
 -   SoftHSM is not recommended by NLnet Labs for production use (people
     do this anyway)
 
-Your own HSM!
 -------------
-
+## Your own HSM!
 SoftHSM2 is a software HSM (emulator?) by NLnet Labs that you can use
 for free.\
 To be installed on the server that needs to use it, *no networking
@@ -300,9 +295,8 @@ Linux: install softhsm2 (apt: softhsm2, apk: softhsm-2.6.1-r4, yum/dnf:
 [Exercise \"Introducing SoftHSM2 by NLnet
 Labs\"]{style="color: rgb(51,153,102);"}
 
-CloudHSM 1
-----------
-
+--------------------------
+## CloudHSM 1
 Recently we see a lot of activity on the HSM front.\
 It is (a.o.) aimed at running a TLS service without having the keys for
 this in memory on the (web)server-instance.\
@@ -336,20 +330,16 @@ Tamperproofness/Compliancy is based on trusting the CloudHSM provider.\
 (Alibaba CloudHSM anyone? Come on! Looks like a 1-on-1 copy of AWS, so
 what\'s keeping you?)
 
-CloudHSM 2
-----------
-
+-------------------------------
+## CloudHSM 2
 Cloudflare made a nice assessment of cloudHSMs, and how to use them,
 that is somewhat up-to-date.\
 They offer a \"key server\" product that can talk to HSM\'s via the
 standard PKCS\#11 \"language\" (PKCS11: more below): \
 <https://developers.cloudflare.com/ssl/keyless-ssl/hardware-security-modules>\
-**[ *TLDR;* ]{style="color: rgb(0,51,102);"}** They mention several
-types of hardware that can be used + instructions.\
-          They mention several brands of cloud based HSM\'s +
-instructions\
-          AWS CloudHSM, IBM Cloud HSM, Azure Dedicated HSM, Azure
-Managed HSM, Google Cloud HSM\
+*TLDR;* They mention several types of hardware that can be used + instructions.\
+          They mention several brands of cloud based HSM\'s + instructions\
+          AWS CloudHSM, IBM Cloud HSM, Azure Dedicated HSM, Azure Managed HSM, Google Cloud HSM
 Looks like AWS is ahead of the others.\
 Unfortunately I did not have the resources or the approval to experiment
 with these yet.\
@@ -377,9 +367,8 @@ solution to \"roll your own\" HSM-oid.\
 <https://www.nitrokey.com/products/nethsm>\
 Unfortunately I did not have the resources to experiment with these yet.
 
-PKCS\#11  \#1
--------------
-
+-----------------------------
+## PKCS\#11  \#1
 The PKCS \#11 standard defines a [programming interface to create and
 manipulate  ]{style="color: rgb(32,33,34);"}cryptographic tokens.\
 Also known as \"Cryptoki\".\
@@ -407,58 +396,51 @@ All PKCS \#11 works via a library/\"driver\" (.dll or .so) often called
 [Exercise \"Introducing pkcs11-tool from opensc package &
 hash\"]{style="color: rgb(51,153,102);"}
 
-CloudHSM other way around
--------------------------
-
+------------------------
+## CloudHSM other way around
 Thales/Safenet/Luna: You can add a CloudHSM \"mode\" to a Luna to create
 your OWN cloudHSM.\
 You can access this self hosted cloudHSM from the internet. (SSL
 protected, but I strongly suggest firewalling it heavily)\
 <https://www.thalesdocs.com/dpod/services/luna_cloud_hsm/index.html>
 
-HSM Roles
----------
-
+--------------------------
+## HSM Roles
 Well equipped HSM\'s offer role based access, and role based
 permissions.\
-I\'ll explain these Roles below, but first the \"Not-your-Roles\"
+I\'ll explain these Roles below, but first: 
 
-### SOC/SEC
+--------------------
+### Probably \"Not-your-Roles\"
 
+-------------------------------
+#### SOC/SEC
 HSM work will sometimes steer you into the same lane as your Security
 people are in.\
 Please let them handle (or advise you on) stuff like access- and other
 policies if this is not your area of expertise.\
 You can easily do things that degrade the security of your setup, and
 ruin the whole purpose of using an HSM.
-
-### Net
-
+#### Net
 With an HSM, your project almost always is \"getting networked\", so you
 are creating a network dependency.\
 Please let the Network people advise you, maybe a separate VLAN is the
 way to go, even if you think it is not needed.
-
-### Your supplier
-
+#### Your supplier
 If the policy stuff or the setup of your HSM is too complex, your vendor
 could offer you the services of an experienced engineer.
 
-### Then the HSM roles.
-
+---------------------------------------
+### Roles for Operations and Admins:
 I partly stole this from the IBM Cloud HSM website:\
 <https://cloud.ibm.com/docs/hardware-security-modules?topic=hardware-security-modules-ibm-cloud-hsm-roles>\
 (also stealable from the Thales website)
-
-#### [ **HSM Security Officer (SO)** ]{style="color: rgb(122,134,154);"}
-
+#### HSM Security Officer (SO)
 The HSM SO has control of the HSM, it\'s the \"admin\". To access HSM SO
 functions, you must first log in as appliance admin.\
 SO is responsible for initialization of the HSM, setting and changing of
 HSM policies and creating and deleting application partitions
-
-#### [ **Partition Security Officer (PO)** ]{style="color: rgb(122,134,154);"}
-
+#### Partition Security Officer (PO)
 Thales SafeNet Luna devices offer partitions (virtual HSMs). So
 different projects can have their \"own\" HSM on your HSM (or separate
 Test from Acceptance and Production).\
@@ -471,9 +453,7 @@ role.\
 PO is responsible for initializing the Crypto Officer role on the
 partition, resetting passwords, setting and changing partition-level
 policies
-
-#### **[Crypto Officer (CO)]{style="color: rgb(122,134,154);"}**
-
+#### Crypto Officer (CO)
 Thales SafeNet Luna devices offer a role called Crypto Officer. (Other
 devices maybe don\'t, then it\'s capabilities are included in the User
 role)\
@@ -483,9 +463,7 @@ The Crypto Officer partition credential allows a client application to
 perform any cryptographic operation, and creating and deleting keys.\
 That is why the conf.xml of ODS includes this credential (PIN).\
 CO is responsible for initializing the Crypto User role.
-
-#### **[Crypto User (CU)]{style="color: rgb(122,134,154);"}**
-
+#### Crypto User (CU)
 Is like a read-only user on Luna. According to Markus Rautiainen
 (InternetStiftelsen) you can still make signatures in this role, just no
 changes to the keys.\
@@ -493,7 +471,6 @@ He also states: Basically, this is the user you will preferably be using
 with your signing application.\
 But: if the application will be creating and deleting keys, like
 OpenDNSsec, then it might be easier to use the CO role.
-
 This role is not mandatory on Luna, since client applications can also
 make signatures using the Crypto Officer credential.\
 As already mentioned: if your signing application also needs to create
@@ -507,9 +484,8 @@ usage, but no key management)
 [Exercise \"pkcs11-tool: gimme some keys & lemme
 in\"]{style="color: rgb(51,153,102);"}
 
-PKCS\#11 \#2
-------------
-
+---------------------------------
+## PKCS\#11 \#2
 PKCS\#11 works with \"Slots\" en \"Tokens\".\
 <https://github.com/tpm2-software/tpm2-pkcs11/blob/master/docs/illustrations/reader-slot-token-obj.png>\
 In PKSC11 \"Token\" is the term used for a device that can do crypto
@@ -551,9 +527,8 @@ Also the P11-kit part of it is possibly a way for remoting SoftHSM.
 [Exercise \"pkcs11-tool: start signing
 already!\"]{style="color: rgb(51,153,102);"}
 
-Other interfaces
-----------------
-
+------------------------
+## Other PKCS\#11 interfaces
 Java Cryptography Extensions, MS CryptoNG.\
 And several libraries that use PKSC11 in the background, so you don\'t
 have to deal with it very much.\
@@ -575,9 +550,9 @@ please\"]{style="color: rgb(51,153,102);"}
 [Optional Demo: a knot instance using SoftHSM, fast rolling and
 shortlived RRSIGs]{style="color: rgb(51,153,102);"}
 
-Workshop exercises:
-===================
+# Workshop exercises:
 
+------------------------
 -   **Exercise \"Random in bash\"
     \-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\--**
 -   random: bash random commands use (non-blocking) /dev/urandom, not
