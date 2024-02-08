@@ -1,30 +1,24 @@
 # Invitation and getting ready
-============================
+------------------------------
 
 ## Aim of this Workshop
---------------------
-
 Mid 2023 people started showing interest in some sort of HSM
 \"Course\".
 Since then even more people got interested every time we mentioned it.
-Specifically it would have to be some hands-on thing, because IT-people
-cannot live on theory alone.
+Specifically it would have to be some hands-on thing, because IT-people cannot live on theory alone.
 So \"Course\" became \"Workshop\".
-People asked for a focus on general HSM knowledge, not on the
-Thales/Safenet/Luna devices we employ.
-Also \"HSM and Cloud\" should be a thing in this workshop people told
-us.
+People asked for a focus on general HSM knowledge, not on the Thales/Safenet/Luna devices we employ.
+Also \"HSM and Cloud\" should be a thing in this workshop people told us.
 The workshop is in English (well\... Dunglish) because our Friends from
-InternetStiftelsen want to join us.
+InternetStiftelsen also want to do this workshop.
 So the purpose of the workshop became:
 - getting to know what an HSM is, and what you can do with it.
 - throwing more than a few commands at an HSM to see what happens.
 - after this workshop you should have gained some confidence when
-working with an HSM or when researching HSM stuff on your own. 
+working with an HSM or when researching HSM stuff on your own.
+-----------------
 
-Setup of the workshop
----------------------
-
+## Setup of the workshop
 Theory mixed with commandline work to make it less boring and get
 experienced (sorry, Jimi Hendrix was playing while writing this)\
 For the hands-on work you can use any host you can install software
@@ -41,16 +35,16 @@ So you Need:
 -   a Linux\* commandline to issue hsm and pkcs11 commands.
 -   an HSM you can use e.g. SoftHSM on your host or some networked HSM
 
-\*) You can try doing this workshop on Mac or Windows if you want, but
+You can try doing this workshop on Mac or Windows if you want, but
 I\'m not really able to help you beyond this:\
 Windows Installer for SoftHSM:
 <https://github.com/disig/SoftHSM2-for-windows>\
 Windows Installer for OpenSC: <https://github.com/OpenSC/OpenSC>\
 Mac: ???
 
-Prior knowledge
----------------
+-------------------
 
+## Prior knowledge
 There is no time to explain things beyond HSM\'s, so you should:
 
 -   know what the essence of assymmetric (public key) and symmetric
@@ -59,13 +53,11 @@ There is no time to explain things beyond HSM\'s, so you should:
     key-pair.\
     (that is basically what DNSsec signing is all about).
 -   use youtube if you lack this knowledge.
+-------------------------
 
-Slides
-======
 
-What is an HSM?
----------------
-
+# Slides
+## What is an HSM?
 -   HSM stands for \"hardware security module\", and it is an appliance
     (maybe application) specialized in doing cryptographic operations.
 -   It is a \"root of trust\" that also stores the keys you wish to
@@ -86,10 +78,9 @@ What is an HSM?
     programmatic interface/API.
 -   Under the hood it probably all gets translated to some API or Socket
     call.
+---------------------
 
-What an HSM is not
-------------------
-
+## What an HSM is not
 -   It does crypto and it does object storage, nothing more.
 -   In general, an HSM is not a device that will hand over any secrets
     (Obvious exception: public parts aren\'t secret).\
