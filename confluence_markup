@@ -1,0 +1,496 @@
+<h1>Content<ac:structured-macro ac:macro-id="3b647679-8c89-45a3-82f6-12973c3afc25" ac:name="toc" ac:schema-version="1">
+    <ac:parameter ac:name="style">none</ac:parameter>
+  </ac:structured-macro>
+</h1>
+<h1>Invitation and getting ready</h1>
+<h2>Aim of this Workshop</h2>
+<p>Mid 2023 people started showing interest in some sort of HSM "Course".<br/>Since then even more people got interested every time we mentioned it.<br/>Specifically it would have to be some hands-on thing, because IT-people cannot live on theory alone.<br/>So "Course" became "Workshop".<br/>People asked for a focus on general HSM knowledge, not on the Thales/Safenet/Luna devices we employ.<br/>Also "HSM and Cloud" should be a thing in this workshop people told us.<br/>The workshop is in English (well... Dunglish) because our Friends from InternetStiftelsen want to join us.<br/>So the purpose of the workshop became:<br/>- getting to know what an HSM is, and what you can do with it.<br/>- throwing more than a few commands at an HSM to see what happens.<br/>- after this workshop you should have gained some confidence when working with an HSM or when researching HSM stuff on your own. </p>
+<h2>Setup of the workshop</h2>
+<p>Theory mixed with commandline work to make it less boring and get experienced (sorry, Jimi Hendrix was playing while writing this)<br/>For the hands-on work you can use any host you can install software packages on and that has a shell.<br/>I'm using Debian 12 Linux and bash on a LXD container on my laptop. You choose your own, but as always ymmv.<br/>If you got confused already, please ask one of the experienced people to help you.<br/>I can provide a linux shell if you want, please ask me. You'll still need Putty or equivalent ssh-client to use it.</p>
+<p>So you Need:</p>
+<ul style="list-style-type: square;">
+  <li>a Linux* commandline to issue hsm and pkcs11 commands.</li>
+  <li>an HSM you can use e.g. SoftHSM on your host or some networked HSM</li>
+</ul>
+<p>*) You can try doing this workshop on Mac or Windows if you want, but I'm not really able to help you beyond this:<br/>Windows Installer for SoftHSM: <a href="https://github.com/disig/SoftHSM2-for-windows">https://github.com/disig/SoftHSM2-for-windows</a>
+  <br/>Windows Installer for OpenSC: <a href="https://github.com/OpenSC/OpenSC">https://github.com/OpenSC/OpenSC</a>
+  <br/>Mac: ???</p>
+<h2>Prior knowledge</h2>
+<p>There is no time to explain things beyond HSM's, so you should:</p>
+<ul style="list-style-type: square;">
+  <li>know what the essence of assymmetric (public key) and symmetric encryption is.</li>
+  <li>know that you can also do digital signing with a public-private key-pair.<br/>(that is basically what DNSsec signing is all about).</li>
+  <li>use youtube if you lack this knowledge.</li>
+</ul>
+<h1>Slides</h1>
+<h2>What is an HSM?</h2>
+<ul>
+  <li>HSM stands for "hardware security module", and it is an appliance (maybe application) specialized in doing cryptographic operations.</li>
+  <li>It is a "root of trust" that also stores the keys you wish to protect. But beware! By default keys generated on an HSM cannot leave the HSM.</li>
+  <li>Mostly used for: digital signing-validation and encryption-decryption.</li>
+  <li>Important in our line of work: make DNSsec RRSIGs.<br/>Note: DNSsec RRSIGs are signatures, but the counter part validation is not done on HSMs but on validating resolving nameservers.</li>
+  <li>Other usage:  signing SSL certificates, storing top level cert + key of a Certificate Authority, Code/Document signing, HTTPS/TLS operations.</li>
+  <li>Important to repeat: an HSM is a key repository, it can create and delete keys and key-pairs if it receives the command to do so in the correct manner.</li>
+  <li>You can issue these command using a shell, a gui, or by using an programmatic interface/API.</li>
+  <li>Under the hood it probably all gets translated to some API or Socket call.</li>
+</ul>
+<h2>What an HSM is not</h2>
+<ul style="list-style-type: square;">
+  <li>It does crypto and it does object storage, nothing more.</li>
+  <li>In general, an HSM is not a device that will hand over any secrets (Obvious exception: public parts aren't secret).<br/>If you don't know a secret key, generally the HSM is not going to help you one bit, because, as we already saw, secrets created on an HSM cannot leave <br/>the HSM (unless the HSM/Key is configured to allow this). Special backup provisions needed!<br/>A "create key" command will not hand you back the generated key. Afterwards the public part of a pair can be read, but the private part cannot.<br/>One way around this is to generate outside the HSM and then import into the HSM. (but is a key outside your HSM really what you want?<br/>And does your HSM even offer an import function?)<br/>Another way could be that you mark a key as exportable/extractable, see documentation YMMV.</li>
+  <li>While we are on the topic of creating keys: Beware! A "create key" command will not even hand you back an id or label of a key or key-pair.<br/>You (or your software) has to provide and store an id and/or label when creating a key, the HSM will store the attributes with the key, double id's and labels = not an error to the HSM.<br/>Later you can tell the HSM "Use key-id X to sign this data Y I'm giving you, and hand me back the result".<br/>Think of OpenDNSsec or BIND in a dnssec context: "sign RR 'nl. IN SOA 3600 .....' with key id 10212".<br/>The HSM will reply with the signature, that needs to be processed by the calling software into an RRSIG.</li>
+  <li>An HSM is not a device that builds your zonefile: lots of RR's in the NL zonefile aren't even signed, e.g. not authoritative for NS and glue! Other software has to assemble the zonefile from RR's and RRSIG's.</li>
+  <li>An HSM is not a device that does key management, like roll overs and expiry. Other software has to instruct the HSM to create and delete a key-pair.<br/>A roll-over to the HSM is just somebody asking to use a different key than before.</li>
+</ul>
+<h2>Who uses HSM's?</h2>
+<ul style="list-style-type: square;">
+  <li>we do <ac:emoticon ac:emoji-id="1f642" ac:name="slightly smiling face"/> </li>
+  <li>but mostly banks and other payment processors.</li>
+  <li>also: Certificate Authorities (CA's, think LetsEncrypt, Sectigo, DigiNotar)</li>
+</ul>
+<h2>Formfactor</h2>
+<p>An HSM can be:</p>
+<ul>
+  <li>A networked hardware appliance like the Thales Luna</li>
+  <li>A locally running piece of software on a server, like SoftHSM<br/>
+    <a href="https://github.com/opendnssec/SoftHSMv2">https://github.com/opendnssec/SoftHSMv2</a>
+  </li>
+  <li>A PCI card or USB device (e.g. YubiHSM)</li>
+  <li>A cloud service or cloud managed device</li>
+  <li>A docker/podman container (Nitro has one: <a href="https://hub.docker.com/r/nitrokey/nethsm">https://hub.docker.com/r/nitrokey/nethsm</a>)</li>
+</ul>
+<p>Your bankcard could be viewed as an HSM... maybe.<br/>If you have a modern computer or laptop, you could have a TPM (Trusted Platform Module) inside it, these have a lot of similarities with an HSM.</p>
+<h2>Capacities</h2>
+<p>Different HSM's do or do not have:</p>
+<ul>
+  <li>networking (SoftHSM doesn't, USB/PCI HSMs vary)</li>
+  <li>high availability networking, loadbalancing, active-active option</li>
+  <li>tamperproofing, hardened appliance-OS</li>
+  <li>a different surface area of attack to a 'normal' server.</li>
+  <li>safe destruction of key material and/or configuration, self-destruct button</li>
+  <li>(FIPS) certifications</li>
+  <li>virtualisation (Thales Luna: partitions)</li>
+  <li>a secured backup mechanism</li>
+  <li>role based access, M of N based authentication, PEDs</li>
+  <li>a form of customer support</li>
+  <li>exportable keys</li>
+  <li>physical anti-theft (chained to the rack or a dangling USB key?)</li>
+  <li>an api/library, gui, cli, cloud-integration, etc.</li>
+  <li>a price tag that gives you nightmares</li>
+  <li>different algorithm support (at different speeds) RSA, EC</li>
+  <li>redundancy (e.g. PSU, network bonding)</li>
+  <li>a backup battery to allow moving the device</li>
+  <li>automatic locking of keys</li>
+  <li>auditability of access / audit trail</li>
+  <li>"open source"ness (Nitro NetHSM looks promising)</li>
+</ul>
+<p>In most cases, an HSM is contacted through an .so / module (let's call it a "driver")</p>
+<h2>What's in it (for us)?</h2>
+<p>At a minimum, an HSM appliance should contain a crypto module.<br/>This is a closed-off 'mini computer' with its own CPU and RAM and storage inside the appliance/card/stick.<br/>This module handles all encryption and signing, also stores the keys (or maybe a key to all keys).<br/>All "other stuff" like e.g. networking and api-interfacing is handled by parts outside this crypto module. </p>
+<p>An HSM should contain an HRNG (hardware random number generator), good key generation is very <br/>dependent on a good source of random numbers.<br/>
+  <span style="color: rgb(0,128,0);">Hands-on: Random in Bash</span>
+</p>
+<p>A Linux/Windows server in most cases has no HRNG, but it uses tricks to create real random.<br/>E.g. harvesting the Xth decimal of all execution times of processes, or in the past also timings of key-presses or mouse<br/>movement (beware: useless on a headless server).<br/>A good key generator will use a blocking random device and wait for new real random bits if this device cannot deliver yet.<br/>Especially when creating keys: a predictable key maybe leads to the worst false sense of security. </p>
+<h2>Salting</h2>
+<p>But also when signing/encrypting some random is sometimes needed! This is commonly called a 'salt' or an 'initialization vector'.<br/>This random could be generated by an HSM, but is never stored in the HSM, it is the responsibility of the signing or encrypting software.<br/>Why salt? The more you use a key, the more output of your key is available to the crackers, the higher the risk becomes of them finding the key.<br/>This is known as an "offline, stored dictionary attack", just pre-calculate (and store and index) all possible options...<br/>With different salting, even identical input and an identical key will give you different output every time.<br/>So put a little random into a signature/encryption, this will make a stored dictionary attack much more difficult, even pseudo random will do.<br/>E.g. NSEC3 can be salted. But the latest RFC advices against it:<br/>"In the case of DNS, the situation is different because the hashed names placed in NSEC3 records are always implicitly 'salted' by hashing the FQDN from each zone."<br/>
+  <a href="https://datatracker.ietf.org/doc/html/rfc9276#name-salt">https://datatracker.ietf.org/doc/html/rfc9276#name-salt</a>
+  <br/>
+  <span style="color: rgb(0,128,0);">Hands-on: Finland tastes salty</span>
+</p>
+<p>The KSK-ZSK "key-subkey" mechanism is nice, you do not have to contact IANA every time you change a key.<br/>But knowing the above, a ZSK also "protects" the KSK against over-use.<br/>You use the KSK only when signing a new DNSKEY RRset, probably &lt; 10 times per year.<br/>You use a ZSK every time a RRSIG expires, probably hundreds of thousands of times per year (if not millions).<br/>ZSK rolling is important: If the baddies have your signing key, they can create a valid signature on a malicious RR <ac:emoticon ac:emoji-id="1f61e" ac:name="disappointed face"/>.</p>
+<p>Also: this is the reason your SSL/TLS (e.g. https) certificate has a certificate chain (the intermediate certificates are their ZSK).<br/>Paranoia bonus: you could keep your KSK, or a root-certificate completely off-line, or even on a stick in a safe (until needed for signing a new DNSKEY RRset)</p>
+<p>E.g. the initialization vector<span style="color: rgb(32,33,34);"> (</span>IV<span style="color: rgb(32,33,34);">) of AES is a salt. </span>
+  <span style="color: rgb(32,33,34);">
+    <br/>
+  </span>
+  <span style="color: rgb(0,128,0);">Hands-on: Cyberchef, your tool for all things crypto</span>
+</p>
+<h2>Why HSM?</h2>
+<p>Arguments for using an HSM:</p>
+<ul>
+  <li>Trust &amp; Safety<br/>
+    <ul>
+      <li>safe processing</li>
+      <li>safe storage, Keys never leave the HSM.</li>
+      <li>Keys are not in memory on your servers.</li>
+    </ul>
+  </li>
+  <li>Outsourcing the most cpu-intensive crypto processing to the most capable party "offloading"<br/>Let your server focus on other stuff. An HSM could maybe handle tens of thousands of signatures per second</li>
+  <li>HA and active-active are very nice features, could have their own use cases.<br/>E.g. a new key on HA-HSM1 will be propagated to HA-HSM2 as well <ac:emoticon ac:emoji-id="1f642" ac:name="slightly smiling face"/> </li>
+  <li>Easy audits. No need to explain how you secure your keys, because the HSM does all this for you and auditors are familiar with them.</li>
+  <li>DNSsec and TLS rely heavily on trust!</li>
+</ul>
+<h2>Why NOT an HSM?</h2>
+<p>Arguments against using an HSM:</p>
+<ul style="list-style-type: square;">
+  <li>complex roles (?!?How many times you say I need to enter the PIN for the blue token!?!)</li>
+  <li>complex backup procedures</li>
+  <li>more complex networking (if you do it right)</li>
+  <li>complexity = higher risk of human error</li>
+  <li>sometimes expensive hardware (no, really expensive)</li>
+  <li>Risk of vendor lock in (ODS is open minded luckily, but your dnssec crown jewels are still inside. Different vendor often = KSK roll)</li>
+  <li>sometimes overkill (e.g. no FIPS required or tamper proofing is not needed)</li>
+  <li>SoftHSM is not recommended by NLnet Labs for production use (people do this anyway)</li>
+</ul>
+<h2>Your own HSM!</h2>
+<p>SoftHSM2 is a software HSM (emulator?) by NLnet Labs that you can use for free.<br/>To be installed on the server that needs to use it, <em>no networking available, no true crypto module: secret keys are in RAM</em>.<br/>The creators of SoftHSM like to enable networking, but lack time and resources.</p>
+<p>To install:</p>
+<p>Linux: install softhsm2 (apt: softhsm2, apk: softhsm-2.6.1-r4, yum/dnf: "not found", roll our own: call me, I got the recipe<br/>
+  <span style="color: rgb(51,153,102);">Exercise "Introducing SoftHSM2 by NLnet Labs"</span>
+</p>
+<h2>CloudHSM 1</h2>
+<p>Recently we see a lot of activity on the HSM front.<br/>It is (a.o.) aimed at running a TLS service without having the keys for this in memory on the (web)server-instance.<br/>"Keyless SSL" (but of course there is a key, just not on the server)<br/>Most offer PKCS11 "language" as a standardised communication path (pkcs11: more below) <br/>Sometimes it is just a keyring in disguise (could be good or bad).<br/>Sometimes only usable from cloud VM instances on the same platform (AWS: access only through ENI interface, only from within your VPC).<br/>Sometimes it is a full blown Thales/Safenet/Luna (partition) with or without a wrapper (e.g. IBM).<br/>"please call our sales team for pricing details"</p>
+<p>AWS offers CloudHSM at $1.50 an hour, so that looks sort of reasonable, but...<br/>...beware of vendor lock-in, cloud can get expensive real fast. Charge per hour / charge per key / charge per use. ...Or all of the above...<br/>AWS CloudHSM are always in a cluster (empty permitted, &gt;1 = redundancy, keys are replicated on all cluster members)<br/>... but you pay per HSM, not per cluster!<br/>... but: if you encrypt, then backup your CloudHSM, you can then throw away the HSM to get an empty cluster.<br/>          No need to keep it running, you can always restore and decrypt on a new instance. (few use cases I think)<br/>          Deployment can take a lot of minutes, so throw-away HSM's are maybe not so attractive.</p>
+<p>Performance is unknown to me, but that we need a lot of signatures in a short time <em>is</em> known to me.<br/>Tamperproofness/Compliancy is based on trusting the CloudHSM provider.<br/>(Alibaba CloudHSM anyone? Come on! Looks like a 1-on-1 copy of AWS, so what's keeping you?)</p>
+<h2>CloudHSM 2</h2>
+<p>Cloudflare made a nice assessment of cloudHSMs, and how to use them, that is somewhat up-to-date.<br/>They offer a "key server" product that can talk to HSM's via the standard PKCS#11 "language" (PKCS11: more below): <br/>
+  <a href="https://developers.cloudflare.com/ssl/keyless-ssl/hardware-security-modules">https://developers.cloudflare.com/ssl/keyless-ssl/hardware-security-modules</a>
+  <br/>
+  <strong>
+    <span style="color: rgb(0,51,102);">
+      <em>TLDR;</em>
+    </span>
+  </strong> They mention several types of hardware that can be used + instructions.<br/>          They mention several brands of cloud based HSM's + instructions<br/>          AWS CloudHSM, IBM Cloud HSM, Azure Dedicated HSM, Azure Managed HSM, Google Cloud HSM<br/>Looks like AWS is ahead of the others.<br/>Unfortunately I did not have the resources or the approval to experiment with these yet.<br/>However, I did find this friendly South-Asian lady (NamrataHShah) that does a demo/lab (in 138 easy steps!):<br/>
+  <a href="https://www.youtube.com/@NamrataHShah">https://www.youtube.com/watch?v=Y6agOjSWAKU</a>
+  <br/>If you're a reader:<br/>
+  <a href="https://docs.aws.amazon.com/cloudhsm/latest/userguide/introduction.html">https://docs.aws.amazon.com/cloudhsm/latest/userguide/introduction.html</a>
+</p>
+<p>Cloudflare (but may also apply to on-prem and other cloud services, in any case offers useful information).<br/>For example (but all cloudhsm mentioned above are documented):<br/>
+  <a href="https://developers.cloudflare.com/ssl/keyless-ssl/hardware-security-modules/ibm-cloud-hsm/">https://developers.cloudflare.com/ssl/keyless-ssl/hardware-security-modules/ibm-cloud-hsm/</a>   (very Luna)<br/>
+  <a href="https://developers.cloudflare.com/ssl/keyless-ssl/hardware-security-modules/softhsmv2/">https://developers.cloudflare.com/ssl/keyless-ssl/hardware-security-modules/softhsmv2/</a> (cheap, but unnetworked, see below)</p>
+<p>NitroHSM is a German company that is creating an open sourced HSM. It is hardware, but they offer a containerized version of it (Docker/Podman) and a demo-server.<br/>It is in an early stage, but if compliancy to a standard (FIPS) or tamperproofing is not your main goal, it could offer an off-server solution to "roll your own" HSM-oid.<br/>
+  <a href="https://hub.docker.com/r/nitrokey/nethsm">https://hub.docker.com/r/nitrokey/nethsm</a> &amp; <a href="https://www.nitrokey.com/products/nethsm">https://www.nitrokey.com/products/nethsm</a>
+  <br/>Unfortunately I did not have the resources to experiment with these yet.</p>
+<h2>PKCS#11  #1</h2>
+<p>The PKCS #11 standard defines a <span style="color: rgb(32,33,34);">programming interface to create and manipulate<span> </span>
+  </span>cryptographic tokens.<br/>Also known as "Cryptoki".<br/>
+  <a href="https://github.com/tpm2-software/tpm2-pkcs11/blob/master/docs/illustrations/pkcs11_api_classification.png">https://github.com/tpm2-software/tpm2-pkcs11/blob/master/docs/illustrations/pkcs11_api_classification.png</a>
+  <br/>Most HSMs implement a PKCS #11 API. So PKCS #11 can be used to talk to an HSM.<br/>Linuxes have the opensc package that contains the opensc-tool for use on the cli.<br/>This tool is mostly functional, but version 0.22/0.23 says it all.<br/>
+  <a href="https://github.com/OpenSC/OpenSC">https://github.com/OpenSC/OpenSC</a>
+</p>
+<p>Linux: install opensc (apt: opensc, apk: opensc-0.23.0-r0, dnf: opensc)</p>
+<p>List of PKCS #11 enabled software: <a href="https://en.wikipedia.org/wiki/List_of_applications_using_PKCS_11">https://en.wikipedia.org/wiki/List_of_applications_using_PKCS_11</a>
+  <br/>Important for us: OpenDNSSEC, BIND, PowerDNS and Knot are on it.<br/>All this software should in principle be able to talk to an HSM.<br/>E.g. Firefox, OpenVPN, OpenSSL, OpenSSH, Oracle DB, Gnome Keyring as clients, and SoftHSM as server.<br/>Lots of programming languages have a library for PKCS11.</p>
+<p>All PKCS #11 works via a library/"driver" (.dll or .so) often called "Module".</p>
+<p>
+  <span style="color: rgb(51,153,102);">Exercise "Introducing pkcs11-tool from opensc package &amp; hash"</span>
+</p>
+<h2>CloudHSM other way around</h2>
+<p>Thales/Safenet/Luna: You can add a CloudHSM "mode" to a Luna to create your OWN cloudHSM.<br/>You can access this self hosted cloudHSM from the internet. (SSL protected, but I strongly suggest firewalling it heavily)<br/>
+  <a href="https://www.thalesdocs.com/dpod/services/luna_cloud_hsm/index.html">https://www.thalesdocs.com/dpod/services/luna_cloud_hsm/index.html</a>
+</p>
+<h2>HSM Roles</h2>
+<p>Well equipped HSM's offer role based access, and role based permissions.<br/>I'll explain these Roles below, but first the "Not-your-Roles"</p>
+<h3>SOC/SEC</h3>
+<p>HSM work will sometimes steer you into the same lane as your Security people are in.<br/>Please let them handle (or advise you on) stuff like access- and other policies if this is not your area of expertise.<br/>You can easily do things that degrade the security of your setup, and ruin the whole purpose of using an HSM.</p>
+<h3>Net</h3>
+<p>With an HSM, your project almost always is "getting networked", so you are creating a network dependency.<br/>Please let the Network people advise you, maybe a separate VLAN is the way to go, even if you think it is not needed.</p>
+<h3>Your supplier</h3>
+<p>If the policy stuff or the setup of your HSM is too complex, your vendor could offer you the services of an experienced engineer.</p>
+<h3>Then the HSM roles.</h3>
+<p>I partly stole this from the IBM Cloud HSM website:<br/>
+  <a href="https://cloud.ibm.com/docs/hardware-security-modules?topic=hardware-security-modules-ibm-cloud-hsm-roles">https://cloud.ibm.com/docs/hardware-security-modules?topic=hardware-security-modules-ibm-cloud-hsm-roles</a>
+  <br/>(also stealable from the Thales website)</p>
+<h4>
+  <span style="color: rgb(122,134,154);">
+    <strong>HSM Security Officer (SO)</strong>
+  </span>
+</h4>
+<p>The HSM SO has control of the HSM, it's the "admin". To access HSM SO functions, you must first log in as appliance admin.<br/>SO is responsible for initialization of the HSM, setting and changing of HSM policies and creating and deleting application partitions</p>
+<h4>
+  <span style="color: rgb(122,134,154);">
+    <strong>Partition Security Officer (PO)</strong>
+  </span>
+</h4>
+<p>Thales SafeNet Luna devices offer partitions (virtual HSMs). So different projects can have their "own" HSM on your HSM (or separate Test from Acceptance and Production).<br/>Partition Security Officer has control of one or more partitions. To access Partition SO functions, you must first log in as this user.<br/>On a Luna by using the LunaCM utility on a registered client computer.<br/>Because on a Luna you always work in a partition, on a Luna this role is mandatory. On other HSM's the PO role is probably included in the SO role.<br/>PO is responsible for initializing the Crypto Officer role on the partition, resetting passwords, setting and changing partition-level policies</p>
+<h4>
+  <strong>
+    <span style="color: rgb(122,134,154);">Crypto Officer (CO)</span>
+  </strong>
+</h4>
+<p>Thales SafeNet Luna devices offer a role called Crypto Officer. (Other devices maybe don't, then it's capabilities are included in the User role)<br/>The Crypto Officer has full read/write access to the partition through the LunaCM utility on a registered client computer.<br/>The Crypto Officer partition credential allows a client application to perform any cryptographic operation, and creating and deleting keys.<br/>That is why the conf.xml of ODS includes this credential (PIN).<br/>CO is responsible for initializing the Crypto User role.</p>
+<h4>
+  <strong>
+    <span style="color: rgb(122,134,154);">Crypto User (CU)</span>
+  </strong>
+</h4>
+<p>Is like a read-only user on Luna. According to Markus Rautiainen (InternetStiftelsen) you can still make signatures in this role, just no changes to the keys.<br/>He also states: Basically, this is the user you will preferably be using with your signing application.<br/>But: if the application will be creating and deleting keys, like OpenDNSsec, then it might be easier to use the CO role.</p>
+<p>This role is not mandatory on Luna, since client applications can also make signatures using the Crypto Officer credential.<br/>As already mentioned: if your signing application also needs to create and delete keys it should use the CO role.<br/>On some HSM devices the CO and CU roles are possibly merged, then see the CO role above.<br/>E.g. SoftHSM only has a 'user' and 'security officer' role. NetHSM has an 'administrator' (all but key usage) and an 'operator' (key usage, but no key management)</p>
+<p>
+  <span style="color: rgb(51,153,102);">Exercise "pkcs11-tool: gimme some keys &amp; lemme in"</span>
+</p>
+<h2>PKCS#11 #2</h2>
+<p>PKCS#11 works with "Slots" en "Tokens".<br/>
+  <a href="https://github.com/tpm2-software/tpm2-pkcs11/blob/master/docs/illustrations/reader-slot-token-obj.png">https://github.com/tpm2-software/tpm2-pkcs11/blob/master/docs/illustrations/reader-slot-token-obj.png</a>
+  <br/>In PKSC11 "Token" is the term used for a device that can do crypto operations, e.g. a smartcard or an HSM.<br/>USB devices for OTP and other things that go into a slot are often also called "tokens", so this is not surprising.<br/>In the smartcard world, and also in the USB-HSM world, there are of course actual slots to put a token in: the card reader or a USB slot.<br/>But on an HSM appliance this is less obvious, so slots and tokens are virtual. (and way less limited in number)<br/>Like in the real world, slots can also be empty as we'll see shortly.<br/>On a Luna, there is a (PCI?) card in the appliance with the crypto module on it. This is the home of virtual non empty slots if I'm correct.<br/>On a Luna, a partition is a virtual slot+token, and 2 partitions on 2 appliances, combined in an ha-group, present as a single HSM.<br/>Often HSM and slot+token are seen as equivalent, this is why the conf.xml has a &lt;TokenLabel&gt; configuration option.<br/>ODS doesn't need to know the actual HSM, if it talks to the .so/driver it will find it. (configured with the vtl command → Chrystoki.conf) <br/>It's a bit hazy what a Slot is on a Luna, the 'slot list' command actually lists all partitions as "Net Token Slot" and the virtual HSM in an ha-group (called: HA Virtual Card Slot).</p>
+<p>Inside a Token are objects, e.g. data, keys, key-pairs, certificates.<br/>Keys come in different types: public, private en secret keys. The last for symmetrical encryption.<br/>An object can be classified as public or private, but this has nothing to do with public/private keys, in the PKI sense of the word.<br/>It just specifies what objects can be used/read unauthenticated.</p>
+<p>Because PKCS#11 is a standard, there are projects like: <a href="https://p11-glue.github.io/p11-glue/">https://p11-glue.github.io/p11-glue/</a>
+  <br/>P11-glue: should make 2 or more different HSM's or Key-rings that support PKCS11 available through 1 "in between" driver (.so / module).<br/>Also the P11-kit part of it is possibly a way for remoting SoftHSM.</p>
+<p>
+  <span style="color: rgb(51,153,102);">Exercise "pkcs11-tool: start signing already!"</span>
+</p>
+<h2>Other interfaces</h2>
+<p>Java Cryptography Extensions, MS CryptoNG.<br/>And several libraries that use PKSC11 in the background, so you don't have to deal with it very much.<br/>
+  <a href="https://python-pkcs11.readthedocs.io/en/latest/">https://python-pkcs11.readthedocs.io/en/latest/</a>
+  <br/>
+  <a href="https://github.com/bentonstark/py-hsm">https://github.com/bentonstark/py-hsm</a>
+  <br/>
+  <a href="https://github.com/LudovicRousseau/PyKCS11">https://github.com/LudovicRousseau/PyKCS11</a>  &amp;&amp;  <a href="https://aws.amazon.com/blogs/apn/signing-data-using-keys-stored-in-aws-cloudhsm-with-python/">https://aws.amazon.com/blogs/apn/signing-data-using-keys-stored-in-aws-cloudhsm-with-python/</a>
+  <br/>
+  <a href="https://github.com/miekg/pkcs11">https://github.com/miekg/pkcs11</a>
+  <br/>Note: YMMV, not all fully matured.</p>
+<p>
+  <span style="color: rgb(51,153,102);">Exercise "Symmetry"</span>
+</p>
+<p>
+  <span style="color: rgb(51,153,102);">Optional Exercise "Trusted Platform Module"</span>
+</p>
+<p>
+  <span style="color: rgb(51,153,102);">Last Exercise "Clean up after yourself please"</span>
+</p>
+<p>
+  <span style="color: rgb(51,153,102);">Optional Demo: a knot instance using SoftHSM, fast rolling and shortlived RRSIGs</span>
+</p>
+<h1>Workshop exercises:</h1>
+<ul style="list-style-type: square;">
+  <li style="font-weight: bold;">
+    <strong>Exercise "Random in bash" -----------------------------------------------------------</strong>
+  </li>
+  <li>random: bash random commands use (non-blocking) /dev/urandom, not real random.<br/>Run: RANDOM=13 &amp;&amp; echo $RANDOM  (you got 21880, didn't you?)<br/>Run twice: echo $RANDOM (you got 9438 and11869 , didn't you?)<br/>Now run <em>all</em> the commands above again!</li>
+  <li>Linux does have real random: /dev/random (but could be blocking)</li>
+  <li>random: cat /proc/sys/kernel/random/poolsize  → used to be 4096, but is now 256 (on kernels &gt;5, a switch was made)</li>
+  <li>random: cat /proc/sys/kernel/random/entropy_avail → on kernels &lt;5 this drops on intensive use of /dev/random (e.g. od -d /dev/random)</li>
+  <li>/dev/urandom generates a predictable, repeatable set of pseudo-random numbers.<br/>The begin argument is a starting point, and this can of course be a piece of "good" random from the pool.</li>
+  <li>For testing a predictable, repeatable set of pseudo-random numbers can actually be a good thing!</li>
+  <li>
+    <em>(After</em> the PKSC11 exercises you can revisit this exercise and try: pkcs11-tool --module /usr/lib/softhsm/libsofthsm2.so --token Token1 --generate-random 64 | xxd -c 64 -p (see random from an HSM)</li>
+  <li style="font-weight: bold;">
+    <strong>Exercise "Finland tastes salty" --------------------------------------------------------</strong>
+  </li>
+  <li>Issue this command (or your OS's equivalent): kdig +dnssec +multi nsec3param fi. @1.1.1.1</li>
+  <li>now do .nl</li>
+  <li>now do .se ( Hint: if the penny doesn't drop, do blah-nonexistant.se. (no nsec3 in .se, so no salt))</li>
+  <li style="font-weight: bold;">
+    <strong>Exercise "</strong>Cyberchef, your tool for all things crypto" -------------------------------</li>
+  <li>Visit: <a href="https://cyberchef.io/#recipe=AES_Encrypt(%7B">https://cyberchef.io/#recipe=AES_Encrypt(%7B'option':'UTF8','string':'my_key1234567890'%7D,%7B'option':'UTF8','string':'0000000000000000'%7D,'CBC','Raw','Hex',%7B'option':'Hex','string':''%7D)&amp;input=VGhpcyBpcyB0b3Agc2VjcmV0ISEh</a>
+  </li>
+  <li>Now change the IV, but not the key and input.</li>
+  <li>Have a look at the left, see what CyberChef can do for you. Now try something new like Base64 and unBase64. (Hint: drag &amp; drop)</li>
+  <li style="font-weight: bold;">
+    <strong>Exercise "Introducing SoftHSM2 by NLnet Labs" -----------------------------------</strong>
+  </li>
+  <li>softhsm: you need to use sudo to use softhsm, if not softhsm only visible by user.</li>
+  <li>softhsm: softhsm2-util --show-slots (always an empty slot available for a new token slot)</li>
+  <li>softhsm: man softhsm2-util (what is is, what does it do: list, init, delete, import. No signing/crypting!)</li>
+  <li>softhsm: softhsm2-util --init-token --free --label "Token1" --pin 0000 --so-pin 1234 (PIN/"password" for user and so-user)</li>
+  <li>softhsm: softhsm2-util --show-slots (show that a token has been inserted, and new free slot was created. --free means: use first empty slot)</li>
+  <li>softhsm: NOTE no keys are in this token yet! (token is just the cryptomodule)</li>
+  <li>softhsm:  cat /etc/softhsm/softhsm2.conf (where are the tokens? And ls -lR /var/lib/softhsm/tokens/)</li>
+  <li>softhsm: there is an sqlite option, probably recompile needed.</li>
+  <li>softhsm2-util --delete-token --token Token1 (get rid of token, for deleting objects in the token see below)</li>
+  <li style="font-weight: bold;">
+    <strong>Exercise "Introducing pkcs11-tool from opensc package &amp; hash"---------------</strong>
+  </li>
+  <li>It's far from complete, version 0.23. Good enough for this workshop. If you're serious you'd better use the pkcs11 libraries of your favorite programming language.</li>
+  <li>man file is not completely helpful, examples on the interwebs are often confusing.</li>
+  <li>pkcs11-tool --module /usr/lib/softhsm/libsofthsm2.so --show-info  (info about the HSM, see how it is linked to softhsm by library)</li>
+  <li>pkcs11-tool --module /usr/lib/softhsm/libsofthsm2.so --list-slots  (like softhsm2-util --show-slots, run as root = shows all slots of all users)</li>
+  <li>pkcs11-tool --module /usr/lib/softhsm/libsofthsm2.so --list-mechanisms (show all crypto operations an HSM can do. Different HSMs differ)</li>
+  <li>If you have access to a Thales-Safenet-Luna HSM this works: pkcs11-tool --module /usr/safenet/lunaclient/lib/libCryptoki2_64.so</li>
+  <li>pkcs11-tool --module /usr/lib/softhsm/libsofthsm2.so --token Token1 --mechanism SHA256 --hash  | xxd -p -c 64 (asks for input, close with ctrl-d twice)</li>
+  <li>echo -n blah &gt; blah.txt &amp;&amp; pkcs11-tool --module /usr/lib/softhsm/libsofthsm2.so --token Token1 --mechanism SHA256 --hash -i blah.txt | xxd -p -c 64<br/>With -i and -o, please make sure you have only 1 space between it and the filename.</li>
+  <li>echo -n blah | pkcs11-tool --module /usr/lib/softhsm/libsofthsm2.so --token Token1 --mechanism SHA256 --hash |  xxd -p -c 64 (like sha256sum en openssl, your token can hash)<br/>Thales: pkcs11-tool --module /usr/safenet/lunaclient/lib/libCryptoki2_64.so --token hagroup-tst --mechanism SHA256 --hash --login -i blah.txt -o blah.hash &amp;&amp; cat blah.hash | xxd -p -c 64<br/>Hint: get the token name and PIN from ods conf.xml (could use --pin, but unsafe on cli)</li>
+  <li style="font-weight: bold;">
+    <strong>Exercise "pkcs11-tool: gimme some keys &amp; lemme in"----------------------------</strong>
+  </li>
+  <li>pkcs11-tool --module /usr/lib/softhsm/libsofthsm2.so --token Token1 --keypairgen --id 1 --label ec256_1 --key-type EC:secp256r1 (error, not logged in)</li>
+  <li>pkcs11-tool --module /usr/lib/softhsm/libsofthsm2.so --token Token1 --keypairgen --id 1 --label ec256_1 --key-type EC:secp256r1 --login --login-type user --pin 0000</li>
+  <li>pkcs11-tool --module /usr/lib/softhsm/libsofthsm2.so --token Token1 --list-objects (only pub part, not logged in)</li>
+  <li>pkcs11-tool --module /usr/lib/softhsm/libsofthsm2.so --token Token1 --list-objects --login --login-type user --pin 0000 (private and public part (same labels!), with login)</li>
+  <li>pkcs11-tool --module /usr/lib/softhsm/libsofthsm2.so --token Token1 --list-objects --pin 0000 (--pin implies --login --login-type user)</li>
+  <li>pkcs11-tool --module /usr/lib/softhsm/libsofthsm2.so --token Token1 --keypairgen --id 2 --label ec256_2 --key-type EC:prime256v1 --pin 0000 (second keypair, different curve)</li>
+  <li>pkcs11-tool --module /usr/lib/softhsm/libsofthsm2.so --token Token1 --read-object --type pubkey --id 2 -o ec256_2-pub.der (output pub part to file, no login needed) (DO NOT use --label in stead of --id)</li>
+  <li>cat ec256_2-pub.der | base64 (there's your pub key) (NOTE: private part is not exportable)</li>
+  <li>(apt install -y dumpasn1) dumpasn1 ec256_2-pub.der (representation in useful format)</li>
+  <li>Advice: even though you gave your key a label, please always use --id, I'v see weird fails when using --label</li>
+  <li style="font-weight: bold;">
+    <strong>Exercise "pkcs11-tool: start signing already!"-------------------------------------</strong>
+  </li>
+  <li>echo -n 'nl.                  3600    IN      SOA     ns1.dns.nl. hostmaster.domain-registry.nl. 2023110219 3600 600 2419200 600' &gt; soa.txt<br/>pkcs11-tool --module /usr/lib/softhsm/libsofthsm2.so --token Token1 --mechanism SHA256 --hash -i soa.txt -o soa.hash (why? because trying to be real: sigs are made on hashes)<br/>pkcs11-tool --module /usr/lib/softhsm/libsofthsm2.so --token Token1 --pin 0000 --sign --id 2 --mechanism ECDSA -i soa.hash -o soa.sig (Needs PIN, you should know why)<br/>cat soa.sig | base64   (That looks remarkably like an EC RRSIG!)<br/>pkcs11-tool --module /usr/lib/softhsm/libsofthsm2.so --token Token1 --pin 0000 --id 2 --verify -m ECDSA -i soa.hash --signature-file soa.sig (that should work, no PIN needed)</li>
+  <li>if you export the public key, and sign with --signature-format openssl, you can also verify with openssl (EC keeps failing, but RSA works fine)<br/>pkcs11-tool --module /usr/lib/softhsm/libsofthsm2.so --token Token1 -k --key-type rsa:1024 --id 1005 --label rsatest5 --pin 0000<br/>pkcs11-tool --module /usr/lib/softhsm/libsofthsm2.so --token Token1 --pin 0000 --sign --id 1005 -m SHA512-RSA-PKCS --input soa.hash --output soa_rsa.sig<br/>pkcs11-tool --module /usr/lib/softhsm/libsofthsm2.so --token Token1 --pin 0000 --verify --id 1005 -m SHA512-RSA-PKCS --signature-file soa_rsa.sig --input soa.hash<br/>pkcs11-tool --module /usr/lib/softhsm/libsofthsm2.so --token Token1 --pin 0000 --read-object --type pubkey --id 1005 -o rsa.der<br/>openssl dgst -verify rsa.der -sha512 -signature soa_rsa.sig soa.hash</li>
+  <li style="font-weight: bold;">
+    <strong>Exercise "Symmetry" -----------------------------------------------------------------</strong>
+  </li>
+  <li>With pkcs11-tool version 0.22 I never managed to use symmetrical encryption (e.g. AES), it is not supported, even though the HSM/Token does report it and I can create an AES key with pkcs11-tool just fine. <br/>pkcs11-tool: unrecognized option '--encrypt'. <br/>Version 0.23 does support it. If you have 0.23:</li>
+  <li>echo 'Top secret information' &gt; blah.txt<br/>pkcs11-tool --module /usr/lib/softhsm/libsofthsm2.so --token Token1 --keygen --key-type AES:16 --label aes16_1 --id 13 --pin 0000<br/>pkcs11-tool --module /usr/lib/softhsm/libsofthsm2.so --token Token1 --pin 0000 --encrypt --id 13 -m AES-CBC-PAD --iv "00000000000000000000000000000000" -i blah.txt -o encrypted_file.data<br/>pkcs11-tool --module /usr/lib/softhsm/libsofthsm2.so --token Token1 --pin 0000 --decrypt --id 13 -m AES-CBC-PAD --iv "00000000000000000000000000000000" -i encrypted_file.data</li>
+  <li style="font-weight: bold;">
+    <strong>Optional Exercise "Trusted Platform Module"</strong>
+  </li>
+  <li>Warning: this does not work in a standard VM or LXD container, so you would have to install software on your host system, proceed only if you are willing to do this.</li>
+  <li>sudo dmesg | grep -i tpm2 → if you do not have a TPM chip, the next commands will not work or be useless.</li>
+  <li>apt install libtpm2-pkcs11-tools libtpm2-pkcs11-1</li>
+  <li>Not strictly needed for the first 3 commands:<br/>tpm2_ptool init --path=~/tmp<br/>export TPM2_PKCS11_STORE=$HOME/tmp<br/>tpm2_ptool addtoken --pid=1 --sopin=1234 --userpin=0000 --label=testing --path ~/tmp</li>
+  <li>pkcs11-tool --module /usr/lib/x86_64-linux-gnu/libtpm2_pkcs11.so.1 --show-info<br/>pkcs11-tool --module /usr/lib/x86_64-linux-gnu/libtpm2_pkcs11.so.1 --list-token-slots<br/>pkcs11-tool --module /usr/lib/x86_64-linux-gnu/libtpm2_pkcs11.so.1 --generate-random 64 | xxd -c 64 -p  (note: no label needed here)<br/>pkcs11-tool --module /usr/lib/x86_64-linux-gnu/libtpm2_pkcs11.so.1 --keypairgen --label="testpair" --id 01 --pin 0000<br/>pkcs11-tool --module /usr/lib/x86_64-linux-gnu/libtpm2_pkcs11.so.1 --label="testing" --test --pin 0000</li>
+  <li style="font-weight: bold;">
+    <strong>Last Exercise "Clean up after yourself please"-----------------------------------------</strong>
+  </li>
+  <li>pkcs11-tool --module /usr/lib/softhsm/libsofthsm2.so --token Token1 --pin 0000 --delete-object --type secrkey --label aes16_1 --id 13  (if used without label = first found or maybe first found without a label)</li>
+  <li>pkcs11-tool --module /usr/lib/softhsm/libsofthsm2.so --token Token1 --pin 0000 --delete-object --label ec256_2 --id 2 --type pubkey<br/>pkcs11-tool --module /usr/lib/softhsm/libsofthsm2.so --token Token1 --pin 0000 --delete-object --label ec256_2 --id 2 --type privkey</li>
+  <li>softhsm2-util --delete-token --token 'Token1'</li>
+  <li>should you have initialized your TPM: tpm2_ptool destroy --pid &lt;your id&gt; → error → rm the dir mentioned in the error (WARNING make sure you should actually be doing this)</li>
+  <li>------------------------------------------------------------------------</li>
+</ul>
+<h2>Optional Demo: a knot instance using SoftHSM, fast rolling and shortlived RRSIGs.</h2>
+<ac:structured-macro ac:macro-id="e1e7b666-8b1b-48ad-8e2e-fbe4796e73de" ac:name="code" ac:schema-version="1">
+  <ac:parameter ac:name="language">bash</ac:parameter>
+  <ac:parameter ac:name="collapse">true</ac:parameter>
+  <ac:plain-text-body><![CDATA[lxc delete knothsm01
+lxc launch images:debian/12 knothsm01
+
+lxc shell knothsm01
+apt install -y less man softhsm2 opensc knot knot-dnssecutils knot-dnsutils
+
+echo "set mouse-=a" > ~/.vimrc    # Make vim behave normally when copy-pasting. Debian-only thing?
+
+usermod -G softhsm knot
+su - knot -s /bin/bash -c 'softhsm2-util --init-token --free --label knot --pin 0000 --so-pin 1234'
+su - knot -s /bin/bash -c 'pkcs11-tool --module /usr/lib/softhsm/libsofthsm2.so --list-token-slots'
+
+vim /etc/knot/knot.conf
+------------------------------------------
+server:
+    rundir: "/run/knot"
+    user: knot:knot
+    automatic-acl: on
+    listen: [ 127.0.0.1@53, ::1@53 ]
+
+log:
+  - target: syslog
+    any: info
+
+database:
+    storage: "/var/lib/knot"
+
+keystore:
+   - id: SoftHSM
+     backend: pkcs11
+     config: "pkcs11:token=knot;pin-value=0000 /usr/lib/softhsm/libsofthsm2.so"
+     key-label: true
+
+submission:
+  - id: unsafe
+    timeout: 10s
+
+policy:
+  - id: automatic-fast
+    manual: off
+    keystore: SoftHSM
+    algorithm: ecdsap256sha256
+    ksk-lifetime: 60m
+    zsk-lifetime: 30m
+    propagation-delay: 2s
+    delete-delay: 10m
+    dnskey-ttl: 300s
+    zone-max-ttl: 300s
+    rrsig-lifetime: 15m
+    rrsig-refresh: 7m
+    rrsig-pre-refresh: 3m
+    ksk-submission: unsafe
+    cds-cdnskey-publish: none
+  - id: manual
+    manual: on
+    keystore: SoftHSM
+
+remote:
+
+template:
+  - id: default
+    storage: "/var/lib/knot"
+    file: "%s.zone"
+    dnssec-signing: on
+    dnssec-policy: automatic-fast
+
+zone:
+  - domain: example.com
+    dnssec-policy: manual
+  - domain: example.net
+------------------------------------------
+knotc conf-check
+
+vim /var/lib/knot/example.com.zone /var/lib/knot/example.net.zone
+----------------
+$ORIGIN example.com.
+$TTL 5m
+@       SOA     ns1 hostmaster 1000 5m 1m 10m 4m
+        NS      ns1
+ns1     A       127.0.0.1
+----------------
+chown knot:knot /var/lib/knot/example.*.zone
+kzonecheck -v --dnssec off /var/lib/knot/example.com.zone
+kzonecheck -v --dnssec off /var/lib/knot/example.net.zone
+ 
+systemctl restart knot
+systemctl status knot
+journalctl -fexu knot.service
+ 
+su - knot -s /bin/bash -c '/usr/sbin/keymgr example.com. generate algorithm=13 ksk=yes zsk=no'
+su - knot -s /bin/bash -c '/usr/sbin/keymgr example.com. generate algorithm=13 ksk=no zsk=yes'
+su - knot -s /bin/bash -c 'pkcs11-tool --module /usr/lib/softhsm/libsofthsm2.so --list-objects --pin 0000'
+
+su - knot -s /bin/bash -c '/usr/sbin/keymgr example.com list'
+su - knot -s /bin/bash -c '/usr/sbin/keymgr example.com list -e'
+ 
+knotc zone-reload example.com
+systemctl status knot
+kzonecheck -v --dnssec on /var/lib/knot/example.com.zone
+cat /var/lib/knot/example.com.zone
+
+knotc zone-status
+knotc zone-read example.com @ SOA
+kdig @::1 +norec +dnssec +cd +multi soa example.com
+kdig @::1 +norec +dnssec +cd +multi dnskey example.com
+
+knotc zone-backup -b +backupdir /var/tmp/backup_example.com +journal example.com.
+vim /var/lib/knot/example.com.zone (make some edit, e.g. add www.example.com)
+knotc zone-reload example.com
+
+kdig @::1 +norec +dnssec +cd +multi soa example.com
+kdig @::1 +norec +dnssec +cd +multi www.example.com
+kdig @::1 +norec +dnssec +cd +multi nonexistant.example.com
+
+------------------------------------
+From Knot docu:
+Import key pair in HSM
+openssl rsa -outform DER -in c4eae5dea3ee8c15395680085c515f2ad41941b6.pem \
+  -out c4eae5dea3ee8c15395680085c515f2ad41941b6.priv.der
+
+openssl rsa -outform DER -in c4eae5dea3ee8c15395680085c515f2ad41941b6.pem \
+  -out c4eae5dea3ee8c15395680085c515f2ad41941b6.pub.der -pubout
+
+pkcs11-tool --module /usr/local/lib/pkcs11.so --login \
+  --write-object c4eae5dea3ee8c15395680085c515f2ad41941b6.priv.der --type privkey \
+  --usage-sign --id c4eae5dea3ee8c15395680085c515f2ad41941b6
+
+pkcs11-tool --module /usr/local/lib/pkcs11.so -login \
+  --write-object c4eae5dea3ee8c15395680085c515f2ad41941b6.pub.der --type pubkey \
+  --usage-sign --id c4eae5dea3ee8c15395680085c515f2ad41941b6]]></ac:plain-text-body>
+</ac:structured-macro>
+<p>
+  <br/>
+</p>
+<p>OpenDNSsec conf.xml example:</p>
+<ac:structured-macro ac:macro-id="e278aec5-d044-43d9-8d8f-9aeca247bf3e" ac:name="code" ac:schema-version="1">
+  <ac:parameter ac:name="collapse">true</ac:parameter>
+  <ac:plain-text-body><![CDATA[<Configuration>
+        <RepositoryList>
+                <Repository name="SoftHSM">
+                        <Module>/usr/lib/softhsm/libsofthsm2.so</Module>
+                        <TokenLabel>OpenDNSSEC</TokenLabel>
+                        <PIN>1234</PIN>
+                </Repository>
+        </RepositoryList>
+]]></ac:plain-text-body>
+</ac:structured-macro>
+<p>
+  <br/>
+</p>
