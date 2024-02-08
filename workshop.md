@@ -941,12 +941,13 @@ Optional Demo: a knot instance using SoftHSM, fast rolling and shortlived RRSIGs
       --usage-sign --id c4eae5dea3ee8c15395680085c515f2ad41941b6
 
 OpenDNSsec conf.xml example:
-
-      
-            
-                    
-                            /usr/lib/softhsm/libsofthsm2.so
-                            OpenDNSSEC
-                            1234
-                    
-            
+```
+<Configuration>
+        <RepositoryList>
+                <Repository name="SoftHSM">
+                        <Module>/usr/lib/softhsm/libsofthsm2.so</Module>
+                        <TokenLabel>OpenDNSSEC</TokenLabel>
+                        <PIN>1234</PIN>
+                </Repository>
+        </RepositoryList>
+```
