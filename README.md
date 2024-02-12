@@ -544,9 +544,6 @@ shortlived RRSIGs]{style="color: rgb(51,153,102);"}
 
 # Workshop exercises:
 
-==hoeba==
-== hoeba ==
-
 ------------------------
 ## Exercise "Random in bash"
 Random: bash random commands use (non-blocking) /dev/urandom, not real random.\
@@ -554,14 +551,19 @@ Run:
 ```bash
 RANDOM=13 && echo $RANDOM
 ```
-You got 21880, didn't you?\
+You got 21880, didn't you?
+
+---
 Now run twice:
 ```bash
 echo $RANDOM
 ```
-You got 9438 and 11869 , didn't you?\
+You got 9438 and 11869 , didn't you?
+
+---
 Now run *both* previous commands again!
 
+---
 Linux does have real random: /dev/random (but could be blocking)\
 Real random:
 ```bash
