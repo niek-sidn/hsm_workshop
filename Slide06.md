@@ -1,3 +1,4 @@
+------------------------------
 ## What's in it?
 At a minimum, an HSM appliance should contain a crypto module.\
 This is a closed-off 'mini computer' with its own CPU and RAM and
