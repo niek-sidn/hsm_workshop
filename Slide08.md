@@ -20,10 +20,7 @@ signing a new DNSKEY RRset)
 
 E.g. the initialization vector (IV) of AES is a salt.
 ## Exercise "Cyberchef, your tool for all things crypto"
-Visit: [CyberChef](https://cyberchef.io/#recipe=AES_Encrypt(%7B'option':'UTF8','string':'my_key1234567890'%7D,%7B'option':'UTF8','string':'0000000000000000'%7D,'CBC','Raw','Hex',%7B'option':'Hex','string':''%7D)&input=VGhpcyBpcyB0b3Agc2VjcmV0ISEh)
-```
-https://cyberchef.io/#recipe=AES_Encrypt(%7B'option':'UTF8','string':'my_key1234567890'%7D,%7B'option':'UTF8','string':'0000000000000000'%7D,'CBC','Raw','Hex',%7B'option':'Hex','string':''%7D)&input=VGhpcyBpcyB0b3Agc2VjcmV0ISEh
-```
+Visit: [CyberChef](https://cyberchef.io/#recipe=AES_Decrypt(%7B'option':'UTF8','string':'my_key1234567890'%7D,%7B'option':'UTF8','string':'0000000000000000'%7D,'CBC','Hex','Raw',%7B'option':'Hex','string':''%7D,%7B'option':'Hex','string':''%7D)&input=NDBiNmJhMWM1ZDI0ZDkzZjEwYmFhZTkzYzRmN2E5NzNhOGQ5YzQ4MDBiYmUyZmM0MzRlMTZiMTVjNzNjYTUxZg)
 
 Now change the IV, but not the key and input.
 
