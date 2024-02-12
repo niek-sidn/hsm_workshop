@@ -3,14 +3,13 @@
 
 ------------------------------
 ## Aim of this Workshop
-Mid 2023 people started showing interest in some sort of HSM
-\"Course\".
+Mid 2023 people started showing interest in some sort of HSM "Course".
 Since then even more people got interested every time we mentioned it.
 Specifically it would have to be some hands-on thing, because IT-people cannot live on theory alone.
-So \"Course\" became \"Workshop\".
+So "Course" became "Workshop".
 People asked for a focus on general HSM knowledge, not on the Thales/Safenet/Luna devices we employ.
-Also \"HSM and Cloud\" should be a thing in this workshop people told us.
-The workshop is in English (well\... Dunglish) because our Friends from
+Also "HSM and Cloud" should be a thing in this workshop people told us.
+The workshop is in English (well... Dunglish) because our Friends from
 InternetStiftelsen also want to do this workshop.
 So the purpose of the workshop became:
 - getting to know what an HSM is, and what you can do with it.
@@ -21,26 +20,25 @@ working with an HSM or when researching HSM stuff on your own.
 -----------------
 ## Setup of the workshop
 Theory mixed with commandline work to make it less boring and get
-experienced (sorry, Jimi Hendrix was playing while writing this)\
+experienced (sorry, Jimi Hendrix was playing while writing this)
 For the hands-on work you can use any host you can install software
 packages on and that has a shell.
-I\'m using Debian 12 Linux and bash on a LXD container on my laptop. You
+I'm using Ubuntu 22.04 Linux and bash on a LXD container on my laptop. You
 choose your own, but as always ymmv.
 If you got confused already, please ask one of the experienced people to
 help you.
-I can provide a linux shell if you want, please ask me. You\'ll still
+I can provide a linux shell if you want, please ask me. You'll still
 need Putty or equivalent ssh-client to use it.
 
 So you Need:
 
--   a Linux\* commandline to issue hsm and pkcs11 commands.
+-   a Linux* commandline to issue hsm and pkcs11 commands.
 -   an HSM you can use e.g. SoftHSM on your host or some networked HSM
 
-You can try doing this workshop on Mac or Windows if you want, but
-I\'m not really able to help you beyond this:\
-Windows Installer for SoftHSM:
-<https://github.com/disig/SoftHSM2-for-windows>\
-Windows Installer for OpenSC: <https://github.com/OpenSC/OpenSC>\
+*)You can try doing this workshop on Mac or Windows if you want, but
+I'm not really able to help you beyond this:\
+Windows Installer for SoftHSM:[SoftHSM2-for-windows](https://github.com/disig/SoftHSM2-for-windows)\
+Windows Installer for OpenSC: [OpenSC](https://github.com/OpenSC/OpenSC)\
 Mac: ???
 
 -------------------
