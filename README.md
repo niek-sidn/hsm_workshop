@@ -48,7 +48,7 @@ There is no time to explain things beyond HSM\'s, so you should:
 -   know what the essence of assymmetric (public key) and symmetric
     encryption is.
 -   know that you can also do digital signing with a public-private
-    key-pair.\
+    key-pair.
     (that is basically what DNSsec signing is all about).
 -   use youtube if you lack this knowledge.
 
@@ -57,9 +57,9 @@ There is no time to explain things beyond HSM\'s, so you should:
 
 ------------------
 ## What is an HSM?
--   HSM stands for \"hardware security module\", and it is an appliance
+-   HSM stands for "hardware security module", and it is an appliance
     (maybe application) specialized in doing cryptographic operations.
--   It is a \"root of trust\" that also stores the keys you wish to
+-   It is a "root of trust" that also stores the keys you wish to
     protect. But beware! By default keys generated on an HSM cannot
     leave the HSM.
 -   Mostly used for: digital signing-validation and
@@ -80,15 +80,14 @@ There is no time to explain things beyond HSM\'s, so you should:
 
 ---------------------
 ## What an HSM is not
--   It does crypto and it does object storage, nothing more.
+-   It does crypto and it does object storage (and user management), nothing more.
 -   In general, an HSM is not a device that will hand over any secrets
-    (Obvious exception: public parts aren\'t secret).\
-    If you don\'t know a secret key, generally the HSM is not going to
+    (Obvious exception: public parts aren't secret).\
+    If you don't know a secret key, generally the HSM is not going to
     help you one bit, because, as we already saw, secrets created on an
-    HSM cannot leave \
-    the HSM (unless the HSM/Key is configured to allow this). Special
+    HSM cannot leave the HSM (unless the HSM/Key is configured to allow this). Special
     backup provisions needed!\
-    A \"create key\" command will not hand you back the generated key.
+    A "create key" command will not hand you back the generated key.
     Afterwards the public part of a pair can be read, but the private
     part cannot.\
     One way around this is to generate outside the HSM and then import
@@ -96,22 +95,22 @@ There is no time to explain things beyond HSM\'s, so you should:
     And does your HSM even offer an import function?)\
     Another way could be that you mark a key as exportable/extractable,
     see documentation YMMV.
--   While we are on the topic of creating keys: Beware! A \"create key\"
+-   While we are on the topic of creating keys: Beware! A "create key"
     command will not even hand you back an id or label of a key or
     key-pair.\
     You (or your software) has to provide and store an id and/or label
     when creating a key, the HSM will store the attributes with the key,
     double id\'s and labels = not an error to the HSM.\
-    Later you can tell the HSM \"Use key-id X to sign this data Y I\'m
-    giving you, and hand me back the result\".\
-    Think of OpenDNSsec or BIND in a dnssec context: \"sign RR \'nl. IN
-    SOA 3600 \.....\' with key id 10212\".\
+    Later you can tell the HSM "Use key-id X to sign this data Y I'm
+    giving you, and hand me back the result".\
+    Think of OpenDNSsec or BIND in a dnssec context: "sign RR 'nl. IN
+    SOA 3600 .....' with key id 10212".\
     The HSM will reply with the signature, that needs to be processed by
     the calling software into an RRSIG.
--   An HSM is not a device that builds your zonefile: lots of RR\'s in
-    the NL zonefile aren\'t even signed, e.g. not authoritative for NS
-    and glue! Other software has to assemble the zonefile from RR\'s and
-    RRSIG\'s.
+-   An HSM is not a device that builds your zonefile: lots of RR's in
+    the NL zonefile aren't even signed, e.g. not authoritative for NS
+    and glue! Other software has to assemble the zonefile from RR's and
+    RRSIG's.
 -   An HSM is not a device that does key management, like roll overs and
     expiry. Other software has to instruct the HSM to create and delete
     a key-pair.\
@@ -124,33 +123,30 @@ There is no time to explain things beyond HSM\'s, so you should:
 -   but mostly banks and other payment processors.
 -   also: Certificate Authorities (CA\'s, think LetsEncrypt, Sectigo,
     DigiNotar)
+-   In theory a website could use an hsm for its ssl certificate. In such a scenario you can store the certificates of-server. 
 
-In short: Organisations that need to prove their secrets are actually secret.     
+In short: Mostly organisations that need to prove their secrets are actually secret.     
 
 ---------------------
 ## HSM Formfactors
 An HSM can be:
 -   A networked hardware appliance like the Thales Luna
--   A locally running piece of software on a server, like SoftHSM\
-    <https://github.com/opendnssec/SoftHSMv2>
+-   A locally running piece of software on a server, like [SoftHSM](https://github.com/opendnssec/SoftHSMv2)
 -   A PCI card or USB device (e.g. YubiHSM)
 -   A cloud service or cloud managed device
--   A docker/podman container (Nitro has one:
-    <https://hub.docker.com/r/nitrokey/nethsm>)
+-   A docker/podman container (Nitro has one: [NetHSM](https://hub.docker.com/r/nitrokey/nethsm>)
 
-Your bankcard could be viewed as an HSM\... maybe.\
-If you have a modern computer or laptop, you could have a TPM (Trusted
-Platform Module) inside it, these have a lot of similarities with an
-HSM.
+Your bankcard could be viewed as an HSM... maybe.\
+If you have a modern computer or laptop, you could have a TPM (Trusted Platform Module) inside it, these have a lot in common with an HSM.
 
 --------------------
 ## Capacities
-Different HSM\'s do or do not have:
+Different HSM's do or do not have:
 
--   networking (SoftHSM doesn\'t, USB/PCI HSMs vary)
+-   networking (SoftHSM doesn't, USB/PCI HSMs vary)
 -   high availability networking, loadbalancing, active-active option
 -   tamperproofing, hardened appliance-OS
--   a different surface area of attack to a \'normal\' server.
+-   a different surface area of attack to a 'normal' server.
 -   safe destruction of key material and/or configuration, self-destruct
     button
 -   (FIPS) certifications
@@ -167,10 +163,9 @@ Different HSM\'s do or do not have:
 -   a backup battery to allow moving the device
 -   automatic locking of keys
 -   auditability of access / audit trail
--   \"open source\"ness (Nitro NetHSM looks promising)
+-   "open source"ness (Nitro NetHSM looks promising)
 
-In most cases, an HSM is contacted through an .so / module (let\'s call
-it a \"driver\")
+In most cases, an HSM is contacted through an .so module (let's call it a "driver")
 
 ---------------------------
 ## What\'s in it (for us)?
