@@ -26,6 +26,12 @@ E.g. NSEC3 can be salted. But the latest RFC advices against it:
 [Next](https://github.com/niek-sidn/hsm_workshop/blob/main/Slide08.md)
 
 ## Exercise "Finland is salty"
+Install dig or kdig on your computer or VM or container:
+```bash
+apt install knot-dnsutils
+OR
+apt install dnsutils
+```
 Issue this command (or your OS's equivalent):
 ```bash
 kdig +dnssec +multi nsec3param fi. @1.1.1.1
