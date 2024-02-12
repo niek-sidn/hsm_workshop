@@ -68,4 +68,7 @@ pkcs11-tool --module /usr/lib/softhsm/libsofthsm2.so --token Token1 --generate-r
 ```
 Here we see random from an HSM
 
+---------------
+[Next](https://github.com/niek-sidn/hsm_workshop/blob/main/Slide07.md)
+
 ----------------
