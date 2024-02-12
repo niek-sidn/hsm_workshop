@@ -134,7 +134,7 @@ An HSM can be:
 -   A locally running piece of software on a server, like [SoftHSM](https://github.com/opendnssec/SoftHSMv2)
 -   A PCI card or USB device (e.g. YubiHSM)
 -   A cloud service or cloud managed device
--   A docker/podman container (Nitro has one: [NetHSM](https://hub.docker.com/r/nitrokey/nethsm>))
+-   A docker/podman container (Nitro has one: [NetHSM](https://hub.docker.com/r/nitrokey/nethsm))
 
 Your bankcard could be viewed as an HSM... maybe.\
 If you have a modern computer or laptop, you could have a TPM (Trusted Platform Module) inside it, these have a lot in common with an HSM.
@@ -168,19 +168,18 @@ Different HSM's do or do not have:
 In most cases, an HSM is contacted through an .so module (let's call it a "driver")
 
 ---------------------------
-## What\'s in it (for us)?
+## What's in it?
 At a minimum, an HSM appliance should contain a crypto module.\
-This is a closed-off \'mini computer\' with its own CPU and RAM and
+This is a closed-off 'mini computer' with its own CPU and RAM and
 storage inside the appliance/card/stick.\
 This module handles all encryption and signing, also stores the keys (or
 maybe a key to all keys).\
-All \"other stuff\" like e.g. networking and api-interfacing is handled
+All "other stuff" like e.g. networking and api-interfacing is handled
 by parts outside this crypto module. 
 
 An HSM should contain an HRNG (hardware random number generator), good
-key generation is very\
-dependent on a good source of random numbers.\
-[Hands-on: Random in Bash]{style="color: rgb(0,128,0);"}
+key generation is very dependent on a good source of random numbers.\
+[Hands-on: Random in Bash](#exercise-random-in-bash)
 
 A Linux/Windows server in most cases has no HRNG, but it uses tricks to
 create real random.\
