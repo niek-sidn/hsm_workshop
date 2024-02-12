@@ -544,16 +544,31 @@ shortlived RRSIGs]{style="color: rgb(51,153,102);"}
 
 # Workshop exercises:
 
+==hoeba==
+== hoeba ==
+
 ------------------------
-## Exercise \"Random in bash\"
--   random: bash random commands use (non-blocking) /dev/urandom, not
-    real random.\
-    Run: RANDOM=13 && echo \$RANDOM  (you got 21880, didn\'t you?)\
-    Run twice: echo \$RANDOM (you got 9438 and11869 , didn\'t you?)\
-    Now run *all* the commands above again!
--   Linux does have real random: /dev/random (but could be blocking)
--   random: cat /proc/sys/kernel/random/poolsize  → used to be 4096, but
-    is now 256 (on kernels \>5, a switch was made)
+## Exercise "Random in bash"
+Random: bash random commands use (non-blocking) /dev/urandom, not real random.\
+Run:
+```bash
+RANDOM=13 && echo $RANDOM
+```
+You got 21880, didn't you?\
+Now run twice:
+```bash
+echo $RANDOM
+```
+You got 9438 and 11869 , didn't you?\
+Now run *both* previous commands again!
+
+Linux does have real random: /dev/random (but could be blocking)\
+Real random:
+```bash
+cat /proc/sys/kernel/random/poolsize
+```
+used to be 4096, but is now 256 (on kernels \>5, a switch was made)\
+
 -   random: cat /proc/sys/kernel/random/entropy\_avail → on kernels \<5
     this drops on intensive use of /dev/random (e.g. od -d /dev/random)
 -   /dev/urandom generates a predictable, repeatable set of
@@ -566,6 +581,7 @@ shortlived RRSIGs]{style="color: rgb(51,153,102);"}
     pkcs11-tool \--module /usr/lib/softhsm/libsofthsm2.so \--token
     Token1 \--generate-random 64 \| xxd -c 64 -p (see random from an
     HSM)
+==
 
 ----------------
 ## Exercise \"Finland tastes salty\"
