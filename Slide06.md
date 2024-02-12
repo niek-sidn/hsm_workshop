@@ -69,5 +69,3 @@ Here we see random from an HSM
 
 ---------------
 [Next](https://github.com/niek-sidn/hsm_workshop/blob/main/Slide07.md)
-
-----------------
