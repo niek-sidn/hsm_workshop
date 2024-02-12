@@ -776,16 +776,16 @@ shortlived RRSIGs]{style="color: rgb(51,153,102);"}
 ### Prep
 ```
 lxc delete knothsm01
-lxc launch images:debian/12 knothsm01
+lxc launch ubuntu:22.04 knothsm01
 
 lxc shell knothsm01
+add-apt-repository ppa:cz.nic-labs/knot-dns-latest
+apt update && apt install -y knot knot-dnssecutils knot-dnsutils less
 ```
 
 ### SoftHSM
 ```
-apt install -y less man softhsm2 opensc knot knot-dnssecutils knot-dnsutils
-
-echo "set mouse-=a" > ~/.vimrc    # Make vim behave normally when copy-pasting. Debian-only thing?
+apt install -y wget man softhsm2 opensc
 
 usermod -G softhsm knot
 su - knot -s /bin/bash -c 'softhsm2-util --init-token --free --label knot --pin 0000 --so-pin 1234'
