@@ -54,7 +54,3 @@ There is no time to explain things beyond HSM\'s, so you should:
 
 -------------------------
 [Next](https://github.com/niek-sidn/hsm_workshop/blob/main/Slide01.md)
-                        <PIN>1234</PIN>
-                </Repository>
-        </RepositoryList>
-```
