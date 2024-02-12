@@ -20,17 +20,23 @@ do.\
 E.g. NSEC3 can be salted. But the latest RFC advices against it:
 > "In the case of DNS, the situation is different because the hashed
 > names placed in NSEC3 records are always implicitly 'salted' by
-> hashing the FQDN from each zone."
+> hashing the FQDN from each zone."\
 [source](https://datatracker.ietf.org/doc/html/rfc9276#name-salt)
 
 [Next](https://github.com/niek-sidn/hsm_workshop/blob/main/Slide08.md)
 
-## Exercise \"Finland is salty\"
--   Issue this command (or your OS\'s equivalent): kdig +dnssec +multi
-    nsec3param fi. \@1.1.1.1
--   now do .nl
--   now do .se ( Hint: if the penny doesn\'t drop, do
-    blah-nonexistant.se. (no nsec3 in .se, so no salt))
+## Exercise "Finland is salty"
+Issue this command (or your OS's equivalent):
+```bash
+kdig +dnssec +multi nsec3param fi. @1.1.1.1
+```
+
+----------------------
+Now do .nl
+
+--------------------
+Now do .se\
+(Hint: if the penny doesn't drop, do blah-nonexistant.se.)
 
 ------------------------
 [Next](https://github.com/niek-sidn/hsm_workshop/blob/main/Slide08.md)
