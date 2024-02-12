@@ -563,27 +563,32 @@ You got 9438 and 11869 , didn't you?
 ---
 Now run *both* previous commands again!
 
+/dev/urandom generates a predictable, repeatable set of pseudo-random numbers.\
+The begin argument is a starting point, and this can of course be a piece of "good" random from the pool.\
+Note: For testing a predictable, repeatable set of pseudo-random numbers can actually be a good thing!
+
 ---
-Linux does have real random: /dev/random (but could be blocking)\
+Linux does have real random: /dev/random (but it could be blocking)\
 Real random:
 ```bash
 cat /proc/sys/kernel/random/poolsize
 ```
-used to be 4096, but is now 256 (on kernels \>5, a switch was made)\
+Used to be 4096, but is now 256 (on kernels >5, a switch was made)
 
--   random: cat /proc/sys/kernel/random/entropy\_avail → on kernels \<5
-    this drops on intensive use of /dev/random (e.g. od -d /dev/random)
--   /dev/urandom generates a predictable, repeatable set of
-    pseudo-random numbers.\
-    The begin argument is a starting point, and this can of course be a
-    piece of \"good\" random from the pool.
--   For testing a predictable, repeatable set of pseudo-random numbers
-    can actually be a good thing!
--   *(After* the PKSC11 exercises you can revisit this exercise and try:
-    pkcs11-tool \--module /usr/lib/softhsm/libsofthsm2.so \--token
-    Token1 \--generate-random 64 \| xxd -c 64 -p (see random from an
-    HSM)
-==
+---
+Available random:
+```bash
+cat /proc/sys/kernel/random/entropy\_avail
+```
+On kernels <5 this drops on intensive use of /dev/random (e.g. `od -d /dev/random`)
+
+---
+
+**After** the PKSC11 exercises you can revisit this exercise and try:
+```
+pkcs11-tool --module /usr/lib/softhsm/libsofthsm2.so --token Token1 --generate-random 64 | xxd -c 64 -p
+```
+Here we see random from an HSM
 
 ----------------
 ## Exercise \"Finland tastes salty\"
