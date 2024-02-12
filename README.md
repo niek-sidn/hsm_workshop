@@ -21,19 +21,21 @@ working with an HSM or when researching HSM stuff on your own.
 ## Setup of the workshop
 Theory mixed with commandline work to make it less boring and get
 experienced (sorry, Jimi Hendrix was playing while writing this)
+
 For the hands-on work you can use any host you can install software
 packages on and that has a shell.
 I'm using Ubuntu 22.04 Linux and bash on a LXD container on my laptop. You
 choose your own, but as always ymmv.
+
 If you got confused already, please ask one of the experienced people to
-help you.
-I can provide a linux shell if you want, please ask me. You'll still
+help you. I can provide a linux shell if you want, please ask me. You'll still
 need Putty or equivalent ssh-client to use it.
 
 So you Need:
 
 -   a Linux* commandline to issue hsm and pkcs11 commands.
--   an HSM you can use e.g. SoftHSM on your host or some networked HSM
+-   an HSM you can use or install SoftHSM on your host.
+-   I repeat: I can provide you with this, if you ask me beforehand.
 
 *)You can try doing this workshop on Mac or Windows if you want, but
 I'm not really able to help you beyond this:\
