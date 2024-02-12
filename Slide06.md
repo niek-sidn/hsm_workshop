@@ -9,17 +9,15 @@ All "other stuff" like e.g. networking and api-interfacing is handled
 by parts outside this crypto module. 
 
 An HSM should contain an HRNG (hardware random number generator), good
-key generation is very dependent on a good source of random numbers.\
+key generation is very dependent on a good source of random numbers.
 
 A Linux/Windows server in most cases has no HRNG, but it uses tricks to
 create real random.\
 E.g. harvesting the Xth decimal of all execution times of processes, or
-in the past also timings of key-presses or mouse\
-movement (beware: useless on a headless server).\
+in the past also timings of key-presses or mouse movement (beware: useless on a headless server).\
 A good key generator will use a blocking random device and wait for new
 real random bits if this device cannot deliver yet.\
-Especially when creating keys: a predictable key maybe leads to the
-worst false sense of security.
+Especially when creating keys: a predictable key maybe leads to the worst false sense of security.
 
 ------------
 [Next](https://github.com/niek-sidn/hsm_workshop/blob/main/Slide07.md)
