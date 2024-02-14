@@ -40,6 +40,7 @@ I think the P11-kit part of project might possibly be a way for remoting SoftHSM
 
 -------------------
 ## Exercise "pkcs11-tool: gimme some keys & lemme in"
+Your first key!
 ```
 pkcs11-tool --module /usr/lib/softhsm/libsofthsm2.so --token Token1 --keypairgen --id 1 --label ec256_1 --key-type EC:secp256r1
 ```    
@@ -86,21 +87,43 @@ And let's actually see the public key:
 ```
 pkcs11-tool --module /usr/lib/softhsm/libsofthsm2.so --token Token1 --read-object --type pubkey --id 2 -o ec256_2-pub.der
 ```
-    (output pub part to file, no login needed) (DO NOT use \--label in
-    stead of \--id)
+No login needed, public parts are not marked as non-extractable or sensitive.\
+Pleas note: DO NOT use "--label" in stead of "--id", unpredictable results.\
+We output the pub part to a DER (binary) file, you can cat it to base64 ...
+
+--------
+... or use OpenSSL to make a PEM:
+```
+openssl ec -pubin -inform DER -in ec256_2-pub.der -outform PEM
+```
+Notice you get the "-----BEGIN PUBLIC KEY-----" or free.
+
+-----------
+Maybe you think "seeing is believing":
+```
+pkcs11-tool --module /usr/lib/softhsm/libsofthsm2.so --token Token1 --read-object --type privkey --id 2 --pin 0000
+```
+> sorry, reading private keys not (yet) supported
+
+pkcs11-tool does not support this and it would only work for key objects that are extractable.
+But we did not actually prove that here.
+
+--------------
+Prove it with more confidence:
+```
+apt install -y libengine-pkcs11-openssl
+openssl pkey -engine pkcs11 -inform ENGINE -in "pkcs11:token=Token1;pin-value=0000;object=ec256_2:type=private" -text
+openssl ecparam -name prime256v1 -genkey | openssl pkey -text
+```
+The zero's from the first openssl command prove that no private material came out of the hsm.
 
 ------
+What if your software needs pkcs11 information is a URI like the openssl command above? E.g. Knot.
 ```
-cat ec256\_2-pub.der \| base64 (there\'s your pub key) (NOTE:
-    private part is not exportable)
+apt install gnutls-bin
+p11tool --provider /usr/lib/softhsm/libsofthsm2.so --list-all
 ```
-```
-(apt install -y dumpasn1) dumpasn1 ec256\_2-pub.der (representation
-    in useful format)
-```
-Advice: even though you gave your key a label, please always use
-    \--id, I\'v see weird fails when using \--label
-
+That should be a nice starting point I think.
 
 --------------------
 ## Exercise "pkcs11-tool: start signing already!"
