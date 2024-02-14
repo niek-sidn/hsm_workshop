@@ -72,7 +72,7 @@ But also the public part is not shown, it is just not the right command.
 -------
 Bonus: "--pin" implies "--login --login-type user"  (same with "--so-pin")
 ```
-pkcs11-tool \--module /usr/lib/softhsm/libsofthsm2.so --token Token1 --list-objects --pin 0000
+pkcs11-tool --module /usr/lib/softhsm/libsofthsm2.so --token Token1 --list-objects --pin 0000
 ```
 
 ------------
