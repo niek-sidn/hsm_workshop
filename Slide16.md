@@ -38,6 +38,53 @@ P11-glue: should make 2 or more different HSM\'s or Key-rings that
 support PKCS11 available through 1 "in between" driver (.so/module).\
 I think the P11-kit part of project might possibly be a way for remoting SoftHSM.
 
+-------------------
+## Exercise "pkcs11-tool: gimme some keys & lemme in"
+```
+pkcs11-tool --module /usr/lib/softhsm/libsofthsm2.so --token Token1 --keypairgen --id 1 --label ec256_1 --key-type EC:secp256r1
+```    
+Error, not logged in.
+
+------------------------
+Try again:
+```
+pkcs11-tool --module /usr/lib/softhsm/libsofthsm2.so --token Token1 --keypairgen --id 1 --label ec256_1 --key-type EC:secp256r1 --login --login-type user --pin 0000
+```
+Yes! We got one!
+
+---------
+Let see:
+```
+pkcs11-tool --module /usr/lib/softhsm/libsofthsm2.so --token Token1 --list-objects
+```
+Did you notice we have only the pub part? Again, not logged in!
+
+--------------
+Try again:
+```
+pkcs11-tool --module /usr/lib/softhsm/libsofthsm2.so --token Token1 --list-objects --login --login-type user --pin 0000
+```
+That's better, we now see the private and public part (same labels!)\
+We do not 
+    
+pkcs11-tool \--module /usr/lib/softhsm/libsofthsm2.so \--token
+    Token1 \--list-objects \--pin 0000 (\--pin implies \--login
+    \--login-type user)
+pkcs11-tool \--module /usr/lib/softhsm/libsofthsm2.so \--token
+    Token1 \--keypairgen \--id 2 \--label ec256\_2 \--key-type
+    EC:prime256v1 \--pin 0000 (second keypair, different curve)
+pkcs11-tool \--module /usr/lib/softhsm/libsofthsm2.so \--token
+    Token1 \--read-object \--type pubkey \--id 2 -o ec256\_2-pub.der
+    (output pub part to file, no login needed) (DO NOT use \--label in
+    stead of \--id)
+cat ec256\_2-pub.der \| base64 (there\'s your pub key) (NOTE:
+    private part is not exportable)
+(apt install -y dumpasn1) dumpasn1 ec256\_2-pub.der (representation
+    in useful format)
+Advice: even though you gave your key a label, please always use
+    \--id, I\'v see weird fails when using \--label
+
+
 --------------------
 ## Exercise "pkcs11-tool: start signing already!"
 Okay, let's go then.
@@ -49,10 +96,12 @@ In the real world, signatures are made on hashes, so:
 ```
 pkcs11-tool --module /usr/lib/softhsm/libsofthsm2.so --token Token1 --mechanism SHA256 --hash -i soa.txt -o soa.hash
 ```
+Signing needs keys, so we use the keys we made earlier:
 ```
 pkcs11-tool --module /usr/lib/softhsm/libsofthsm2.so --token Token1 --sign --id 2 --mechanism ECDSA -i soa.hash -o soa.sig
 ```
-(Needs PIN, you should know why)\
+Needs PIN, you should know why. 
+
     cat soa.sig \| base64   (That looks remarkably like an EC RRSIG!)\
     pkcs11-tool \--module /usr/lib/softhsm/libsofthsm2.so \--token
     Token1 \--pin 0000 \--id 2 \--verify -m ECDSA -i soa.hash
