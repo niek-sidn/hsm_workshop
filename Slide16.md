@@ -65,22 +65,39 @@ Try again:
 pkcs11-tool --module /usr/lib/softhsm/libsofthsm2.so --token Token1 --list-objects --login --login-type user --pin 0000
 ```
 That's better, we now see the private and public part (same labels!)\
-We do not 
-    
-pkcs11-tool \--module /usr/lib/softhsm/libsofthsm2.so \--token
-    Token1 \--list-objects \--pin 0000 (\--pin implies \--login
-    \--login-type user)
-pkcs11-tool \--module /usr/lib/softhsm/libsofthsm2.so \--token
-    Token1 \--keypairgen \--id 2 \--label ec256\_2 \--key-type
-    EC:prime256v1 \--pin 0000 (second keypair, different curve)
-pkcs11-tool \--module /usr/lib/softhsm/libsofthsm2.so \--token
-    Token1 \--read-object \--type pubkey \--id 2 -o ec256\_2-pub.der
+We do not see the actual keys using this command, not surprising for the private part, since the HSM obviously never wants to show its private parts.\
+But also the public part is not shown, it is just not the right command.
+
+-------
+Bonus: "--pin" implies "--login --login-type user"  (same with "--so-pin")
+```
+pkcs11-tool \--module /usr/lib/softhsm/libsofthsm2.so --token Token1 --list-objects --pin 0000
+```
+
+------------
+Let's make a second key pair, with a different curve
+```
+pkcs11-tool --module /usr/lib/softhsm/libsofthsm2.so --token Token1 --keypairgen --id 2 --label ec256_2 --key-type EC:prime256v1 --pin 0000
+```
+ (For RSA: "--key-type RSA:2048")
+
+-----------
+And let's actually see the public key:
+```
+pkcs11-tool --module /usr/lib/softhsm/libsofthsm2.so --token Token1 --read-object --type pubkey --id 2 -o ec256_2-pub.der
+```
     (output pub part to file, no login needed) (DO NOT use \--label in
     stead of \--id)
+
+------
+```
 cat ec256\_2-pub.der \| base64 (there\'s your pub key) (NOTE:
     private part is not exportable)
+```
+```
 (apt install -y dumpasn1) dumpasn1 ec256\_2-pub.der (representation
     in useful format)
+```
 Advice: even though you gave your key a label, please always use
     \--id, I\'v see weird fails when using \--label
 
