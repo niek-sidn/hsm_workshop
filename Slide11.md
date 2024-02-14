@@ -48,7 +48,7 @@ When you did the show-slots, you saw that a token has been inserted (with an une
 (--free just means: use first empty slot, so you do not have to look first)
 
 -------------
-NOTE no keys are in this token yet! The token is just the cryptomodule.
+NOTE no keys are in this token yet! The token is just the cryptomodule, and softhsm2-util is not the tool for creating keys.
 ```bash
 cat /etc/softhsm/softhsm2.conf
 ls -lR /var/lib/softhsm/tokens/
