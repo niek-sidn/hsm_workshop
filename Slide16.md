@@ -83,7 +83,7 @@ pkcs11-tool --module /usr/lib/softhsm/libsofthsm2.so --token Token1 --keypairgen
  (For RSA: "--key-type RSA:2048")
 
 -----------
-And let's actually see the public key:
+And let's actually see the public part:
 ```
 pkcs11-tool --module /usr/lib/softhsm/libsofthsm2.so --token Token1 --read-object --type pubkey --id 2 -o ec256_2-pub.der
 ```
