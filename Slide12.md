@@ -1,6 +1,6 @@
 --------------------------
 ## CloudHSM 1
-Recently we see a lot of activity on the HSM front.\
+Recently we see a lot cloud of activity on the HSM front.\
 It is (a.o.) aimed at running a TLS service without having the keys for
 this in memory on a (web)server-instance.\
 "Keyless SSL" (but of course there is a key, just not on the server)\
