@@ -146,28 +146,19 @@ pkcs11-tool --module /usr/lib/softhsm/libsofthsm2.so --token Token1 --sign --id 
 ```
 Needs PIN, you should know why.
 
+-----------
+Let's see:
+```
+cat soa.sig | base64
+```
+That looks remarkably like an EC RRSIG!
 
-    cat soa.sig \| base64   (That looks remarkably like an EC RRSIG!)\
-    pkcs11-tool \--module /usr/lib/softhsm/libsofthsm2.so \--token
-    Token1 \--pin 0000 \--id 2 \--verify -m ECDSA -i soa.hash
-    \--signature-file soa.sig (that should work, no PIN needed)
--   if you export the public key, and sign with \--signature-format
-    openssl, you can also verify with openssl (EC keeps failing, but RSA
-    works fine)\
-    pkcs11-tool \--module /usr/lib/softhsm/libsofthsm2.so \--token
-    Token1 -k \--key-type rsa:1024 \--id 1005 \--label rsatest5 \--pin
-    0000\
-    pkcs11-tool \--module /usr/lib/softhsm/libsofthsm2.so \--token
-    Token1 \--pin 0000 \--sign \--id 1005 -m SHA512-RSA-PKCS \--input
-    soa.hash \--output soa\_rsa.sig\
-    pkcs11-tool \--module /usr/lib/softhsm/libsofthsm2.so \--token
-    Token1 \--pin 0000 \--verify \--id 1005 -m SHA512-RSA-PKCS
-    \--signature-file soa\_rsa.sig \--input soa.hash\
-    pkcs11-tool \--module /usr/lib/softhsm/libsofthsm2.so \--token
-    Token1 \--pin 0000 \--read-object \--type pubkey \--id 1005 -o
-    rsa.der\
-    openssl dgst -verify rsa.der -sha512 -signature soa\_rsa.sig
-    soa.hash
+---------------
+Let's verify:
+```
+pkcs11-tool --module /usr/lib/softhsm/libsofthsm2.so --token Token1 --id 2 --verify -m ECDSA -i soa.hash --signature-file soa.sig
+```
+That should work, no PIN needed
 
 ------------------
 [Next](https://github.com/niek-sidn/hsm_workshop/blob/main/Slide17.md)
