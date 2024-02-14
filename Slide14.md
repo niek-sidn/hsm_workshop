@@ -59,8 +59,8 @@ With -i and -o, please make sure you have only 1 space between it and the filena
 The *xxd -p -c 64* is just to convert the binary output to human-readable, sha256sum-like output.
 
 ---------------
-If you are using an actual Thales Luna, use --login and -o blah.hash (hint: get the token name and PIN from /etc/opendnssec/conf.xml)
-E.g.:\
+If you are using an actual Thales Luna, use --login and -o blah.hash (hint: get the token name and PIN from /etc/opendnssec/conf.xml)\
+E.g.:
 ```
 pkcs11-tool --module /usr/safenet/lunaclient/lib/libCryptoki2_64.so --token my-token --mechanism SHA256 --hash --login -i blah.txt -o blah.hash
 cat blah.hash | xxd -p -c 64
