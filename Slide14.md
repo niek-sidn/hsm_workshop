@@ -37,7 +37,7 @@ of your favorite programming language. [e.g. python-pksc11](https://python-pkcs1
     (info about the HSM, see how it is linked to softhsm by library)
 -   pkcs11-tool --module /usr/lib/softhsm/libsofthsm2.so --list-slots 
     (like softhsm2-util --show-slots, run as root = shows all slots of
-    all users)
+    all users, but if run as non-root, pkcs11-tool shows only own tokens)
 -   pkcs11-tool --module /usr/lib/softhsm/libsofthsm2.so
     --list-mechanisms (show all crypto operations an HSM can do.
     Different HSMs differ)
