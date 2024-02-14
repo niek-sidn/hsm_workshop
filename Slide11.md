@@ -42,8 +42,8 @@ softhsm2-util --init-token --free --label "Token1" --pin 0000 --so-pin 1234
 softhsm2-util --show-slots
 ```
 The pin you see is a PIN/password for using the token, but why twice? Because there are 2 users/roles.
-The normal user can only do crypto operations using the key objects in the token, but not create or destroy key objects.
-The Security officer ("SO", more on this later) can create or destroy key objects.
+In SoftHSM the normal user can only do crypto operations using the key objects in the token, but not create or destroy tokens.
+In SoftHSM the Security officer ("SO", more on this later) can create or destroy tokens.
 When you did the show-slots, you saw that a token has been inserted (with an unexpected number), and a new free slot was created (also with an unexpected number).
 (--free just means: use first empty slot, so you do not have to look first)
 
