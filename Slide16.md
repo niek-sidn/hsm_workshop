@@ -32,17 +32,48 @@ An object can be classified as public or private, but this has nothing
 to do with public/private keys, in the PKI sense of the word.\
 It just specifies what objects can be used/read unauthenticated.
 
-Because PKCS\#11 is a standard, there are projects like:
+Because PKCS#11 is a standard, there are projects like:
 [p11-glue](https://p11-glue.github.io/p11-glue/)\
 P11-glue: should make 2 or more different HSM\'s or Key-rings that
 support PKCS11 available through 1 "in between" driver (.so/module).\
 I think the P11-kit part of project might possibly be a way for remoting SoftHSM.
 
 --------------------
-[Exercise \"pkcs11-tool: start signing
-already!\"]{style="color: rgb(51,153,102);"}
-
-
+## Exercise "pkcs11-tool: start signing already!"
+Okay, let's go then.
+First make something that resembles a DNS RR:
+```
+echo -n 'nl.                  3600    IN      SOA     ns1.dns.nl.    hostmaster.domain-registry.nl. 2023110219 3600 600 2419200 600' > soa.txt
+```
+In the real world, signatures are made on hashes, so:
+```
+pkcs11-tool --module /usr/lib/softhsm/libsofthsm2.so --token Token1 --mechanism SHA256 --hash -i soa.txt -o soa.hash
+```
+```
+pkcs11-tool --module /usr/lib/softhsm/libsofthsm2.so --token Token1 --sign --id 2 --mechanism ECDSA -i soa.hash -o soa.sig
+```
+(Needs PIN, you should know why)\
+    cat soa.sig \| base64   (That looks remarkably like an EC RRSIG!)\
+    pkcs11-tool \--module /usr/lib/softhsm/libsofthsm2.so \--token
+    Token1 \--pin 0000 \--id 2 \--verify -m ECDSA -i soa.hash
+    \--signature-file soa.sig (that should work, no PIN needed)
+-   if you export the public key, and sign with \--signature-format
+    openssl, you can also verify with openssl (EC keeps failing, but RSA
+    works fine)\
+    pkcs11-tool \--module /usr/lib/softhsm/libsofthsm2.so \--token
+    Token1 -k \--key-type rsa:1024 \--id 1005 \--label rsatest5 \--pin
+    0000\
+    pkcs11-tool \--module /usr/lib/softhsm/libsofthsm2.so \--token
+    Token1 \--pin 0000 \--sign \--id 1005 -m SHA512-RSA-PKCS \--input
+    soa.hash \--output soa\_rsa.sig\
+    pkcs11-tool \--module /usr/lib/softhsm/libsofthsm2.so \--token
+    Token1 \--pin 0000 \--verify \--id 1005 -m SHA512-RSA-PKCS
+    \--signature-file soa\_rsa.sig \--input soa.hash\
+    pkcs11-tool \--module /usr/lib/softhsm/libsofthsm2.so \--token
+    Token1 \--pin 0000 \--read-object \--type pubkey \--id 1005 -o
+    rsa.der\
+    openssl dgst -verify rsa.der -sha512 -signature soa\_rsa.sig
+    soa.hash
 
 ------------------
 [Next](https://github.com/niek-sidn/hsm_workshop/blob/main/Slide17.md)
