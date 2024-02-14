@@ -105,7 +105,7 @@ pkcs11-tool --module /usr/lib/softhsm/libsofthsm2.so --token Token1 --read-objec
 ```
 > sorry, reading private keys not (yet) supported
 
-pkcs11-tool does not support this and it would only work for key objects that are extractable.
+pkcs11-tool does not support this and it would only work for key objects that are extractable.\
 But we did not actually prove that here.
 
 --------------
@@ -132,15 +132,20 @@ First make something that resembles a DNS RR:
 ```
 echo -n 'nl.                  3600    IN      SOA     ns1.dns.nl.    hostmaster.domain-registry.nl. 2023110219 3600 600 2419200 600' > soa.txt
 ```
+
+----------------
 In the real world, signatures are made on hashes, so:
 ```
 pkcs11-tool --module /usr/lib/softhsm/libsofthsm2.so --token Token1 --mechanism SHA256 --hash -i soa.txt -o soa.hash
 ```
+
+-------------------
 Signing needs keys, so we use the keys we made earlier:
 ```
 pkcs11-tool --module /usr/lib/softhsm/libsofthsm2.so --token Token1 --sign --id 2 --mechanism ECDSA -i soa.hash -o soa.sig
 ```
-Needs PIN, you should know why. 
+Needs PIN, you should know why.
+
 
     cat soa.sig \| base64   (That looks remarkably like an EC RRSIG!)\
     pkcs11-tool \--module /usr/lib/softhsm/libsofthsm2.so \--token
