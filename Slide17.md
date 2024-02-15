@@ -10,7 +10,7 @@ have to deal with it very much.\
 Note: YMMV, not all fully matured.
 
 --------------------
-## Exercise \"Symmetry\"
+## Exercise "Symmetry"
 -   With pkcs11-tool version 0.22 I never managed to use symmetrical encryption (e.g. AES), it is not supported, even though the
     HSM/Token does report it and I can create an AES key with pkcs11-tool just fine.
     pkcs11-tool: unrecognized option \'\--encrypt\'.
@@ -27,7 +27,7 @@ Note: YMMV, not all fully matured.
 
 
 ---------------
-## Optional Exercise \"Trusted Platform Module\"**
+## Optional Exercise "Trusted Platform Module"
 -   Warning: this does not work in a standard VM or LXD container, so
     you would have to install software on your host system, proceed only
     if you are willing to do this.
