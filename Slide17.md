@@ -1,6 +1,6 @@
-## Other PKCS\#11 interfaces
+## Other PKCS#11 interfaces
 Java Cryptography Extensions, MS CryptoNG.\
-And several libraries that use PKSC11 in the background, so you don\'t
+And several libraries that use PKSC11 in the background, so you don't
 have to deal with it very much.\
 <https://python-pkcs11.readthedocs.io/en/latest/>\
 <https://github.com/bentonstark/py-hsm>\
