@@ -53,9 +53,11 @@ NOTE no keys are in this token yet! The token is just the cryptomodule, and soft
 cat /etc/softhsm/softhsm2.conf
 ls -lR /var/lib/softhsm/tokens/
 ```
+Note: if you compiled SoftHSM yourself, according to my recipe, you should have an Sqlite3 db in /var/lib/softhsm/tokens/.\
+      try: sqlite3 /var/lib/softhsm/tokens/....../sqlite3.db and command .tables to see all (hint: .quit).
+
 Please note: SoftHSM isolates its slots/tokens, a token created by a user is unavailable to other users.
-This means that if you are creating tokens for a different user (e.g. Bind, Knot, OpenDNSsec) you need to use sudo. You'll learn this later.\
-Note: if you compiled SoftHSM yourself, according to my recipe, you probably have no /var/lib/softhsm/tokens/ but an Sqlite db somewhere.
+This means that if you are creating tokens for a different user (e.g. Bind, Knot, OpenDNSsec) you need to use sudo. You'll learn this later.
 
 -------------------
 [Next](https://github.com/niek-sidn/hsm_workshop/blob/main/Slide12.md)
