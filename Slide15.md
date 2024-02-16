@@ -67,4 +67,4 @@ cat blah.hash | xxd -p -c 64
 ```
 
 -----------------
-[Next](https://github.com/niek-sidn/hsm_workshop/blob/main/Slide15.md)
+[Next](https://github.com/niek-sidn/hsm_workshop/blob/main/Slide16.md)
