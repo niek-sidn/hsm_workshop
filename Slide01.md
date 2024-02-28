@@ -4,11 +4,11 @@
 -   HSM stands for "hardware security module", and it is an appliance
     (maybe application) specialized in doing cryptographic operations.
 -   It is a "root of trust" that also stores the keys you wish to
-    protect.  
+    protect.<br>
     But beware! By default keys generated on an HSM cannot leave the HSM.
 -   Mostly used for: digital signing-validation and
     encryption-decryption.
--   Important in our line of work: make DNSsec RRSIGs.\
+-   Important in our line of work: make DNSsec RRSIGs.<br>
     Note: DNSsec RRSIGs are signatures, but the counter part validation
     is not done on HSMs but on validating resolving nameservers.
 -   Other usage:  signing SSL certificates, storing top level cert + key
@@ -22,7 +22,7 @@
 -   Under the hood it probably all gets translated to some API or Socket
     call.
 
-**Be patient: The WHY/WHY-not of an HSM will be addressed on slide 9 and 10**
+***Be patient: The WHY/WHY-not of an HSM will be addressed on slide 9 and 10***
 
 --------------------
 [Next](https://github.com/niek-sidn/hsm_workshop/blob/main/Slide02.md)
