@@ -1,5 +1,6 @@
 ------------------
 ## What is an HSM?
+
 -   HSM stands for "hardware security module", and it is an appliance
     (maybe application) specialized in doing cryptographic operations.
 -   It is a "root of trust" that also stores the keys you wish to
