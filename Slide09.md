@@ -6,6 +6,9 @@ Arguments for using an HSM:
     -   safe processing
     -   safe storage, Keys never leave the HSM.
     -   Keys are not in memory on your servers.
+-   Certification and transparancy can be factors here.
+-   Possibly interesting for trusted (cloud)computing (encrypted RAM for VM's in "half-trusted" environment)
+-   Possibly a way to avoid breaking agreements, maybe even avoid legal risks.
 -   Outsourcing the most cpu-intensive crypto processing to the most
     capable party "offloading"\
     Let your server focus on other stuff. An HSM could maybe handle tens
