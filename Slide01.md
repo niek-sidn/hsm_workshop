@@ -21,5 +21,7 @@
 -   Under the hood it probably all gets translated to some API or Socket
     call.
 
+**Be patient: The WHY/WHY-not of an HSM will be addressed on slide 9 and 10**
+
 --------------------
 [Next](https://github.com/niek-sidn/hsm_workshop/blob/main/Slide02.md)
