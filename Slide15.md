@@ -27,12 +27,12 @@ All of PKCS#11 works via a library/"driver" (.dll or .so) often called
 ## Exercise "Introducing pkcs11-tool from opensc package & hash"
 OpenCS is far from complete, version 0.23. But good enough for this
 workshop. Note: man file is not yet completely helpful, and examples 
-on the interwebs are often confusing.
+on the interwebs are often confusing. To roll your [own](https://github.com/niek-sidn/hsm_workshop/blob/main/Build_OpenSC.md)
 
 Note: If you're serious you'd better use the pkcs11 libraries
 of your favorite programming language.
 ```
-apt install opencs    (or roll your own see: https://github.com/niek-sidn/hsm_workshop/blob/main/Build_OpenSC.md)
+apt install opencs
 pkcs11-tool --module /usr/lib/softhsm/libsofthsm2.so --show-info
 ```
 Info about the HSM, observe how it is linked to softhsm by library, more info than softhsm2-util.
