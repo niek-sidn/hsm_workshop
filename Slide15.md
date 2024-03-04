@@ -32,7 +32,7 @@ on the interwebs are often confusing.
 Note: If you're serious you'd better use the pkcs11 libraries
 of your favorite programming language.
 ```
-apt install opencs (or roll your own)
+apt install opencs    (or roll your own see: https://github.com/niek-sidn/hsm_workshop/blob/main/Build_OpenSC.md)
 pkcs11-tool --module /usr/lib/softhsm/libsofthsm2.so --show-info
 ```
 Info about the HSM, observe how it is linked to softhsm by library, more info than softhsm2-util.
