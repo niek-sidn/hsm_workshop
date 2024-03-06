@@ -38,16 +38,16 @@ if you do not have a TPM chip, the next commands will not work or be useless.
 
 Install the pkcs11 packages for tpm
 ```
-apt install libtpm2-pkcs11-tools libtpm2-pkcs11-1
+sudo apt install libtpm2-pkcs11-tools libtpm2-pkcs11-1
 ```
 
 --------------
 Try the following commands:
  (note: no --token needed here)\
 ```
-pkcs11-tool --module /usr/lib/x86_64-linux-gnu/libtpm2_pkcs11.so.1 --show-info
-pkcs11-tool --module /usr/lib/x86_64-linux-gnu/libtpm2_pkcs11.so.1 --list-token-slots
-pkcs11-tool --module /usr/lib/x86_64-linux-gnu/libtpm2_pkcs11.so.1 --generate-random 64 | xxd -c 64 -p
+sudo pkcs11-tool --module /usr/lib/x86_64-linux-gnu/libtpm2_pkcs11.so.1 --show-info
+sudo pkcs11-tool --module /usr/lib/x86_64-linux-gnu/libtpm2_pkcs11.so.1 --list-token-slots
+sudo pkcs11-tool --module /usr/lib/x86_64-linux-gnu/libtpm2_pkcs11.so.1 --generate-random 64 | xxd -c 64 -p
 ```
 
 --------------
