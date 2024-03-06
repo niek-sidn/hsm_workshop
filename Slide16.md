@@ -47,7 +47,7 @@ pkcs11-tool --module /usr/lib/softhsm/libsofthsm2.so --token Token1 --keypairgen
 Error, not logged in.
 
 ------------------------
-Try again:
+Try again, but better:
 ```
 pkcs11-tool --module /usr/lib/softhsm/libsofthsm2.so --token Token1 --keypairgen --id 1 --label ec256_1 --key-type EC:secp256r1 --login --login-type user --pin 0000
 ```
@@ -61,7 +61,7 @@ pkcs11-tool --module /usr/lib/softhsm/libsofthsm2.so --token Token1 --list-objec
 Did you notice we have only the pub part? Again, not logged in!
 
 --------------
-Try again:
+Try again but better:
 ```
 pkcs11-tool --module /usr/lib/softhsm/libsofthsm2.so --token Token1 --list-objects --login --login-type user --pin 0000
 ```
