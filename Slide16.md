@@ -88,7 +88,7 @@ And let's actually see the public part:
 pkcs11-tool --module /usr/lib/softhsm/libsofthsm2.so --token Token1 --read-object --type pubkey --id 2 -o ec256_2-pub.der
 ```
 No login needed, public parts are not marked as non-extractable or sensitive.\
-Pleas note: DO NOT use "--label" in stead of "--id", unpredictable results.\
+Please note: DO NOT use "--label" instead of "--id", unpredictable results.\
 We output the pub part to a DER (binary) file, you can cat it to base64 ...
 
 --------
