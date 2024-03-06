@@ -23,6 +23,7 @@ Different HSM's do or do not have:
 -   automatic locking of keys
 -   auditability of access / audit trail
 -   "open source"ness (Nitro NetHSM looks promising)
+-   SNMP
 
 In most cases, an HSM is contacted through an .so module (let's call it a "driver")
 
