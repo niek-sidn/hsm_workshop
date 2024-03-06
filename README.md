@@ -43,6 +43,9 @@ Windows Installer for SoftHSM:[SoftHSM2-for-windows](https://github.com/disig/So
 Windows Installer for OpenSC: [OpenSC](https://github.com/OpenSC/OpenSC)\
 Mac: ???
 
+You can also use a Docker container to do the workshop. It contains all the tools needed during the workshop:
+docker run -ti marknl/hsmworkshop /bin/bash
+
 -------------------
 ## Prior knowledge
 There is no time to explain things beyond HSM\'s, so you should:
