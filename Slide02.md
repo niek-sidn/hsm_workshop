@@ -1,6 +1,6 @@
 ---------------------
 ## What an HSM is not
--   It does crypto and it does object storage (and user management), nothing more.
+-   It does crypto and it does object storage (and user management), "nothing" more.
 -   In general, an HSM is not a device that will hand over any secrets
     (Obvious exception: public parts aren't secret).\
     If you don't know a secret key, generally the HSM is not going to
