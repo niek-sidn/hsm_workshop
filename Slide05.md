@@ -11,7 +11,7 @@ Different HSM's do or do not have:
 -   (FIPS) certifications
 -   virtualisation (Thales Luna: partitions)
 -   a secured backup mechanism
--   role based access, M of N based authentication, PEDs
+-   role based access, M of N based authentication, PEDs, or Password based
 -   a form of customer support
 -   exportable keys
 -   physical anti-theft (chained to the rack or a dangling USB key?)
