@@ -46,7 +46,7 @@ database:
 
 keystore:
    - id: SoftHSM
-     # usermod -G softhsm knot
+     # usermod -aG softhsm knot
      backend: pkcs11
      config: "pkcs11:token=knot;pin-value=0000 /usr/lib/softhsm/libsofthsm2.so"
      key-label: true
