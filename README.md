@@ -44,7 +44,9 @@ Windows Installer for OpenSC: [OpenSC](https://github.com/OpenSC/OpenSC)\
 Mac: ???
 
 You can also use a Docker container to do the workshop. It contains all the tools needed during the workshop:
+```bash
 docker run -ti marknl/hsmworkshop /bin/bash
+```
 
 -------------------
 ## Prior knowledge
