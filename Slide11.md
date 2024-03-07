@@ -15,6 +15,7 @@ If not, you can roll our own: Here is the [recipe](https://github.com/niek-sidn/
 sudo -i
 apt update
 apt install -y softhsm2
+usermod -G softhsm <your username>
 ```
 ------------
 SoftHSM has virtual **"slots"**, in which **"tokens"** can be placed (like a card reader or USB port)\
