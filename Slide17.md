@@ -73,7 +73,7 @@ softhsm2-util --delete-token --token 'Token1'
 ```
 
 should you have initialized your TPM:
-(***WARNING make sure you should actually be doing this***)
+(***WARNING Please make sure you are not removing anything that you still need***)
 ```
 tpm2_ptool destroy --pid <your id>
 ```
