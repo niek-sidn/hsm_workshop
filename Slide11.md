@@ -4,7 +4,7 @@
 for **free**.\
 To be installed on the server that needs to use it, **no networking
 available, no true crypto module: secret keys are in RAM**.\
-Nice: SoftHSM is a drop in for a real HSM, often switching to a real HSM means changing very little.
+Nice: SoftHSM is a **drop in** for a real HSM, often switching to a real HSM means changing very little.
 
 Often included in your distribution: (apt: softhsm2, apk: softhsm-2.6.1-r4)
 If not, you can roll our own: Here is the [recipe](https://github.com/niek-sidn/hsm_workshop/blob/main/Build_SoftHSM.md)!
@@ -19,7 +19,7 @@ SoftHSM has virtual "slots", in which "tokens" can be placed (like a card reader
 Token is just the term used for a device or virtual device that can do crypto operations, (like a smartcard or an USB-HSM).
 A token can contain lots of key objects.
 ```bash
-softhsm2-util --show-slots
+sudo softhsm2-util --show-slots
 ```
 Slots are numbered, but there always an empty slot available for a new token slot.
 
