@@ -6,7 +6,7 @@ Interesting commands
 ```
 add-apt-repository ppa:cz.nic-labs/knot-dns-latest
 apt install -y knot knot-dnssecutils knot-dnsutils less softhsm2 opensc
-usermod -G softhsm knot
+usermod -aG softhsm knot
 su - knot -s /bin/bash -c 'softhsm2-util --init-token --free --label knot --pin 0000 --so-pin 1234'
 ls -lR /var/lib/softhsm/tokens/
 pkcs11-tool --module /usr/lib/softhsm/libsofthsm2.so --list-slots
