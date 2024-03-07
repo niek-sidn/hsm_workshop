@@ -6,10 +6,14 @@ Also known as "Cryptoki".
 [PKCS#11 illustrated](https://github.com/tpm2-software/tpm2-pkcs11/blob/master/docs/illustrations/pkcs11_api_classification.png)\
 Most HSMs implement a PKCS#11 API. So PKCS#11 can be used to talk to
 an HSM.\
-Linuxes have the opensc package that contains the opensc-tool for use on
-the cli.\
-This tool is mostly functional, but version 0.22/0.23 says it all.
-[GitHub](https://github.com/OpenSC/OpenSC)
+
+Linuxes have the opensc package that contains the pksc11-tool for use on the cli.\
+**Please note:** HSMs implement a PKCS#11 API but also offer vendor specific tools (like softhsm2-util), you sometimes can accomplish things using both paths!
+
+**Also note:** The pksc11-tool from the opensc package is mostly functional, but version 0.22/0.23 says it all.
+[GitHub](https://github.com/OpenSC/OpenSC)\
+To roll your [own somewhat newer version](https://github.com/niek-sidn/hsm_workshop/blob/main/Build_OpenSC.md)
+
 
 Linux: install opensc (apt: opensc, apk: opensc-0.23.0-r0, dnf: opensc)
 
@@ -27,12 +31,12 @@ All of PKCS#11 works via a library/"driver" (.dll or .so) often called
 ## Exercise "Introducing pkcs11-tool from opensc package & hash"
 OpenCS is far from complete, version 0.23. But good enough for this
 workshop. Note: man file is not yet completely helpful, and examples 
-on the interwebs are often confusing. To roll your [own](https://github.com/niek-sidn/hsm_workshop/blob/main/Build_OpenSC.md)
+on the interwebs are often confusing.
 
 Note: If you're serious you'd better use the pkcs11 libraries
 of your favorite programming language.
 ```
-apt install opensc
+apt install opensc xxd
 pkcs11-tool --module /usr/lib/softhsm/libsofthsm2.so --show-info
 ```
 Info about the HSM, observe how it is linked to softhsm by library, more info than softhsm2-util.
