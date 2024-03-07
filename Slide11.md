@@ -1,15 +1,13 @@
 -------------
 ## Your own HSM!
-SoftHSM2 is a software HSM (emulator?) by NLnet Labs that you can use
-for free.\
+**SoftHSM2** is a software HSM (emulator?) by NLnet Labs that you can use
+for **free**.\
 To be installed on the server that needs to use it, **no networking
 available, no true crypto module: secret keys are in RAM**.\
-The creators of SoftHSM would like to enable networking, but lack time and resources.
+Nice: SoftHSM is a drop in for a real HSM, often switching to a real HSM means changing very little.
 
-To install:
-
-Linux: install softhsm2 (apt: softhsm2, apk: softhsm-2.6.1-r4, yum/dnf:
-"not found", roll our own: I got the [recipe](https://github.com/niek-sidn/hsm_workshop/blob/main/Build_SoftHSM.md)!
+Often included in your distribution: (apt: softhsm2, apk: softhsm-2.6.1-r4)
+If not, you can roll our own: Here is the [recipe](https://github.com/niek-sidn/hsm_workshop/blob/main/Build_SoftHSM.md)!
 
 --------------------
 ## Exercise "Introducing SoftHSM2 by NLnet Labs"
