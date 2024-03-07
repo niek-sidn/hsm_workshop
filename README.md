@@ -12,7 +12,7 @@ Also "HSM and Cloud" should be a thing in this workshop people told us.
 The workshop is in English (well... Dunglish) because our Friends from
 InternetStiftelsen also want to do this workshop.
 So the purpose of the workshop became:
-- getting to know what an HSM is, and what you can do with it.
+- getting to know what an HSM is, and what you can do with it (for what type of problem could it be a solution?).
 - throwing more than a few commands at an HSM to see what happens.
 - after this workshop you should have gained some confidence when
 working with an HSM or when researching HSM stuff on your own.
