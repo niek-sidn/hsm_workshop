@@ -80,7 +80,8 @@ Let's make a second key pair, with a different curve
 ```
 sudo pkcs11-tool --module /usr/lib/softhsm/libsofthsm2.so --token Token1 --keypairgen --id 2 --label ec256_2 --key-type EC:prime256v1 --pin 0000
 ```
- (For RSA: "--key-type RSA:2048")
+ (For RSA: "--key-type RSA:2048")\
+ (How to find the ECDSA key types: openssl ecparam -list_curves)
 
 -----------
 And let's actually see the public part:
