@@ -38,7 +38,8 @@
     key than before.
 -   Trust is a complex concept, an HSM will not magically provide it.<br>
     Phind.com: "At its core, trust is the belief in the reliability, truth, or ability of someone or something."<br>
-    This means it also has to do with feelings, believes even politics. It takes a long time to create, and only minutes to destroy.
+    This means it also has to do with public image, feelings, believes and even politics.<br>
+    It takes a long time to create, and only minutes to destroy.
 
 --------------------
 [Next](https://github.com/niek-sidn/hsm_workshop/blob/main/Slide03.md)
