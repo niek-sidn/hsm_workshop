@@ -25,7 +25,7 @@ E.g. NSEC3 can be salted. But the latest RFC advices against it:
 
 [Next](https://github.com/niek-sidn/hsm_workshop/blob/main/Slide08.md)
 
-## Exercise "Finland is salty"
+## Exercise "Finland is salty" (could it be the Salmiakki?)
 Install dig or kdig on your computer or VM or container:
 ```bash
 apt install knot-dnsutils
