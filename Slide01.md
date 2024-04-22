@@ -4,7 +4,7 @@
 -   HSM stands for "hardware security module", and it is an appliance
     (maybe application) specialized in doing cryptographic operations.
 -   As such it is a "base of trust", that also stores the keys you wish to
-    protect.<br>
+    protect.<br> This means no more storing keys on a host or VM<br>
     But beware! By default keys generated on an HSM cannot leave the HSM.
 -   Mostly used for: digital signing-validation and
     encryption-decryption.
