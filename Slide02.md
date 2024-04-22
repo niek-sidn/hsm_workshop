@@ -5,9 +5,9 @@
     (Obvious exception: public parts aren't secret).\
     If you don't know a secret key, generally the HSM is not going to
     help you one bit, because, as we already saw, secrets created on an
-    HSM cannot leave the HSM (unless the HSM/Key is configured to allow this). Special
-    backup provisions needed!\
-    A "create key" command will not hand you back the generated key.
+    HSM cannot leave the HSM (unless the HSM/Key is configured to allow this).<br>
+    Special backup provisions needed!\
+-   A "create key" command will not hand you back the generated key.
     Afterwards the public part of a pair can be read, but the private
     part cannot.\
     One way around this is to generate outside the HSM and then import
@@ -34,7 +34,7 @@
 -   An HSM is not a device that does key management, like roll overs and
     expiry. Other software has to instruct the HSM to create and delete
     a key-pair.\
-    A roll-over to the HSM is just somebody asking to use a different
+    A roll-over, to the HSM, is just somebody asking to use a different
     key than before.
 
 --------------------
