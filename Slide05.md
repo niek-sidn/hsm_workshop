@@ -24,6 +24,7 @@ Different HSM's do or do not have:
 -   auditability of access / audit trail
 -   "open source"ness (Nitro NetHSM looks promising)
 -   SNMP
+-   And this is a very incomplete list...
 
 In most cases, an HSM is contacted through an .so module (let's call it a "driver")
 
