@@ -14,7 +14,7 @@ If not, you can roll our own: Here is the [recipe](https://github.com/niek-sidn/
 ```bash
 sudo -i
 apt update
-apt install -y softhsm2
+apt install -y softhsm2 sudo
 usermod -aG softhsm <your username>
 ```
 ------------
