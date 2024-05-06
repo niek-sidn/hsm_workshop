@@ -4,7 +4,7 @@
 The KSK-ZSK "key-subkey" mechanism is nice, you do not have to contact
 IANA every time you change a key.\
 But knowing the above, a ZSK also "protects" the KSK against
-over-use (too long, too often).\
+over-use (for too long, too often(?)).\
 You use the KSK only when signing a new DNSKEY RRset, probably < 10
 times per year.\
 You use a ZSK every time a RRSIG expires, probably hundreds of thousands
