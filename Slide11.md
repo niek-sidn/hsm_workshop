@@ -47,8 +47,8 @@ You need middleware, more on that later!
 -------------
 Your first token
 ```bash
-softhsm2-util --init-token --free --label "Token1" --pin 0000 --so-pin 1234
-softhsm2-util --show-slots
+sudo softhsm2-util --init-token --free --label "Token1" --pin 0000 --so-pin 1234
+sudo softhsm2-util --show-slots
 ```
 The pin you see is a PIN/password for using the token, but why twice? Because there are 2 users/roles in SoftHSM.
 In SoftHSM the normal user can do crypto operations using the key objects in the token, and create or destroy tokens.
