@@ -1,5 +1,5 @@
 -------------
-## Your own HSM!
+## Your very own HSM!
 **SoftHSM2** is a software HSM (emulator?) by NLnet Labs that you can use
 for **free**. [link](https://github.com/opendnssec/SoftHSMv2)\
 To be installed on the server that needs to use it, **no networking
