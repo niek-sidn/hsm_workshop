@@ -3,7 +3,7 @@
 Arguments against using an HSM:
 
 -   More **Complexity** = higher risk of human error
-    -   Complex roles (?!?How many times you say I need to enter the PIN for the blue token!?!)
+    -   Complex roles (*?!?How many times you say I need to enter the PIN for the blue token!?!*)
     -   Complex backup procedures
     -   More complex networking (if you do it right)
 -   Could make **automation** more difficult.
