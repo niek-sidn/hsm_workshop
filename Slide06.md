@@ -1,6 +1,6 @@
 ------------------------------
 ## What's in it?
-At a minimum, an HSM appliance should contain a crypto module.\
+At a minimum, an HSM appliance should contain a **crypto module**.\
 This is a closed-off 'mini computer' with its own CPU and RAM and
 storage inside the appliance/card/stick.\
 This module handles all encryption and signing, also stores the keys (or
@@ -9,8 +9,8 @@ All "other stuff" like e.g. networking and api-interfacing is handled
 by parts outside this crypto module.\
 The crypto module in most cases has a very limited interface.
 
-An HSM should contain an HRNG (hardware random number generator), good
-key generation is very dependent on a good source of random numbers.
+An HSM should contain an HRNG (hardware random number generator),\
+because key generation is very dependent on a good source of random numbers.
 
 A Linux/Windows server in most cases has no HRNG, but it uses tricks to
 create real random.\
