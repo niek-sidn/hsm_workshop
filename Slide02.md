@@ -1,29 +1,28 @@
 ---------------------
-## What an HSM is not
+## What an HSM is *not*
 -   It does crypto and it does object storage (and user management), "nothing" more.
 -   In general, an HSM is not a device that will hand over any secrets
     (Obvious exception: public parts aren't secret).\
     If you don't know a secret key, generally the HSM is not going to
-    help you one bit, because, as we already saw, secrets created on an
-    HSM cannot leave the HSM (unless the HSM/Key is configured to allow this).<br>
-    Special backup provisions needed!\
--   A "create key" command will not hand you back the generated key.
+    help you one bit, because secrets created on an HSM normally cannot leave
+    the HSM (unless the HSM/Key is configured to allow this).\
+    A "create key" command will not even hand you back the generated key.
     Afterwards the public part of a pair can be read, but the private
     part cannot.\
-    One way around this is to generate outside the HSM and then import
+    :loudspeaker: Special backup provisions needed!
+-   One way around this is to generate outside the HSM and then import
     into the HSM. (but is a key outside your HSM really what you want?\
     And does your HSM even offer an import function?)\
     Another way could be that you mark a key as exportable/extractable,
     see documentation YMMV.
--   While we are on the topic of creating keys: Beware! A "create key"
-    command will not even hand you back an id or label of a key or
+-   Beware! A "create key" command will not even hand you back an id or label of a key or
     key-pair.\
     You (or your software) has to provide and store an id and/or label
     when creating a key, the HSM will store the attributes with the key,
     double id\'s and labels = not an error to the HSM.\
     Later you can tell the HSM "Use key-id X to sign this data Y I'm
     giving you, and hand me back the result".\
-    Think of OpenDNSsec or BIND in a dnssec context: "sign RR 'nl. IN
+    Think of OpenDNSsec or BIND in a DNSSEC context: "sign RR 'nl. IN
     SOA 3600 .....' with key id 10212".\
     The HSM will reply with the signature, that needs to be processed by
     the calling software into an RRSIG.
