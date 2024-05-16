@@ -4,7 +4,7 @@
 for **free**. [link](https://github.com/opendnssec/SoftHSMv2)\
 To be installed on the server that needs to use it, **no networking
 available, no true crypto module: secret keys are in RAM**.\
-Nice: SoftHSM is a **drop in** for a real HSM, this means you have to change very little when switching to a real HSM.
+Nice: SoftHSM is a **drop in** for a real HSM, this means you have to change very little when switching to a real HSM.\
 Experimental networking for SoftHSM:\
 [Vegardit](https://github.com/vegardit/docker-softhsm2-pkcs11-proxy/blob/main/README.md)\
 [Doc at PowerDNS](https://doc.powerdns.com/authoritative/dnssec/pkcs11.html)
