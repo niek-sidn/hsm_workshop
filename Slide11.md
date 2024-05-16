@@ -5,6 +5,9 @@ for **free**. [link](https://github.com/opendnssec/SoftHSMv2)\
 To be installed on the server that needs to use it, **no networking
 available, no true crypto module: secret keys are in RAM**.\
 Nice: SoftHSM is a **drop in** for a real HSM, this means you have to change very little when switching to a real HSM.
+Experimental networking for SoftHSM:\
+[Vegardit](https://github.com/vegardit/docker-softhsm2-pkcs11-proxy/blob/main/README.md)
+[Doc at PowerDNS](https://doc.powerdns.com/authoritative/dnssec/pkcs11.html)
 
 Often included in your distribution: (apt: softhsm2, apk: softhsm-2.6.1-r4)
 If not, you can roll our own: Here is the [recipe](https://github.com/niek-sidn/hsm_workshop/blob/main/Build_SoftHSM.md)!
