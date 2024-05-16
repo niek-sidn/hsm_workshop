@@ -19,7 +19,6 @@ Arguments for using an HSM:
     E.g. a new key on HA-HSM1 will be propagated to HA-HSM2 as well  
 -   **Easy audits**. No need to explain how you secure your keys, because
     the HSM does all this for you and auditors are familiar with them.
--   DNSsec and TLS rely heavily on trust!
 
 ---------------------
 [Next](https://github.com/niek-sidn/hsm_workshop/blob/main/Slide10.md)
