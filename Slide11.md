@@ -12,10 +12,10 @@ If not, you can roll our own: Here is the [recipe](https://github.com/niek-sidn/
 --------------------
 ## Exercise "Introducing SoftHSM2 by NLnet Labs"
 ```bash
-**sudo -i**
+** sudo -i OR su - **
 apt update
 apt install -y softhsm2 man sudo
-usermod -aG softhsm <your username>
+usermod -aG softhsm <your username>   ### !!! so non-root user can read /etc/softhsm/softhsm2.conf
 ```
 ------------
 SoftHSM has virtual **"slots"**, in which **"tokens"** can be placed (like a card reader or USB port)\
@@ -24,8 +24,10 @@ A token can contain lots of key objects.\
 [illustration](https://github.com/tpm2-software/tpm2-pkcs11/blob/master/docs/illustrations/reader-slot-token-obj.png)
 ```bash
 sudo softhsm2-util --show-slots
+softhsm2-util --show-slots
 ```
-Slots are numbered, but there always an empty slot available for a new token slot.
+Slots are numbered, but there always an empty slot available/created for a new token slot.\
+SoftHSM keeps its users separated, user_x cannot list user_y's slots. But root sees all.
 
 **Note:** Here you meet for the first time a **vendor tool** for using an HSM.\
 SoftHSM -> softhsm2-util\
@@ -47,14 +49,15 @@ You need middleware, more on that later!
 -------------
 Your first token
 ```bash
-sudo softhsm2-util --init-token --free --label "Token1" --pin 0000 --so-pin 1234
-sudo softhsm2-util --show-slots
+softhsm2-util --init-token --free --label "Token1" --pin 0000 --so-pin 1234  # owned by current user!
+softhsm2-util --show-slots     # use sudo if you want to see all slots
 ```
-The pin you see is a PIN/password for using the token, but why twice? Because there are 2 users/roles in SoftHSM.
-In SoftHSM the normal user can do crypto operations using the key objects in the token, and create or destroy tokens.
-In SoftHSM the Security officer ("SO", more on this later) can reinitialise a token, not much else can be known from the documentation.
-When you did the show-slots, you saw that a token has been inserted (with an unexpected number), and a new free slot was created (also with an unexpected number).
+Notice that a token has been "inserted" (with an unexpected number), and a new free slot was created (also with an unexpected number).\
 (--free just means: use first empty slot, so you do not have to look first)
+
+The pin is a PIN (password) for using the token, but why twice? Because there are **2 users/roles** in SoftHSM.\
+In SoftHSM the normal user can do crypto operations using the key objects in the token, and create or destroy tokens.\
+In SoftHSM the Security officer ("SO") can reinitialise a token, not much else can be known from the documentation.
 
 -------------
 **NOTE** no keys are in this token yet! The token is just the cryptomodule, and softhsm2-util is not the tool for creating keys.
@@ -65,7 +68,7 @@ ls -lR /var/lib/softhsm/tokens/
 Note: if you compiled SoftHSM yourself, according to my recipe, you should have an Sqlite3 db in /var/lib/softhsm/tokens/.\
       try: sqlite3 /var/lib/softhsm/tokens/....../sqlite3.db and command .dump to see all (hint: .quit/.help).
 
-Please note: SoftHSM isolates its slots/tokens, a token created by a user is unavailable to other users.
+Please note: As I mentioned earlier, SoftHSM isolates its slots/tokens, a token created by a user is unavailable to other users.
 This means that if you are creating tokens for a different user (e.g. Bind, Knot, OpenDNSsec) you need to use sudo. You'll learn this later.
 
 -------------------
