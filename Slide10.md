@@ -8,10 +8,10 @@ Arguments against using an HSM:
     -   More complex networking (if you do it right)
 -   Could make **automation** more difficult.
 -   Sometimes **expensive** hardware (no, really expensive)
--   Risk of **vendor lock in** (ODS is open minded luckily)\
+-   Risk of **vendor lock in** (OpenDNSSEC is open minded luckily)\
     Different vendor often = KSK roll)
 -   Sometimes **overkill** (e.g. no FIPS required or tamper proofing is not needed)
--   **SoftHSM** used to not be recommended (by NLnet Labs) for production use (people do this anyway). Recently I was unable to locate this statement.
+-   **SoftHSM** used to *not* be recommended (by NLnet Labs) for production use (people do this anyway). Recently I was unable to locate this statement.
     
 ----------------------
 [Next](https://github.com/niek-sidn/hsm_workshop/blob/main/Slide11.md)
