@@ -26,7 +26,7 @@ pkcs11-tool --module /usr/lib/softhsm/libsofthsm2.so --token Token1 --pin 0000 -
 
 ---------------
 ## Optional Exercise "Trusted Platform Module"
-Warning: this does not work in a standard VM or LXD container, so
+Warning: this does not work in a standard VM or Docker/LXD container, so
 you would have to install software on your host system, proceed only
 if you are willing to do this.
 
