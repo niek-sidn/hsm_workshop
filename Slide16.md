@@ -100,9 +100,9 @@ openssl ec -pubin -inform DER -in ec256_2-pub.der -outform PEM
 Notice you get the "-----BEGIN PUBLIC KEY-----" or free.
 
 -----------
-Maybe you think "seeing is believing":
+Maybe you think "seeing is believing", so lets see what happens if we try to get the private part:
 ```
-sudo pkcs11-tool --module /usr/lib/softhsm/libsofthsm2.so --token Token1 --read-object --type privkey --id 2 --pin 0000
+pkcs11-tool --module /usr/lib/softhsm/libsofthsm2.so --token Token1 --read-object --type privkey --id 2 --pin 0000
 ```
 > sorry, reading private keys not (yet) supported
 
@@ -110,19 +110,19 @@ pkcs11-tool does not support this and it would only work for key objects that ar
 But we did not actually prove that here.
 
 --------------
-Prove it with more confidence:
+Prove it with some more confidence:
 ```
 sudo apt install -y openssl libengine-pkcs11-openssl
-sudo openssl pkey -engine pkcs11 -inform ENGINE -in "pkcs11:token=Token1;pin-value=0000;object=ec256_2:type=private" -text
-sudo openssl ecparam -name prime256v1 -genkey | openssl pkey -text
+openssl pkey -engine pkcs11 -inform ENGINE -in "pkcs11:token=Token1;pin-value=0000;object=ec256_2:type=private" -text
+# to see what the output could have been: openssl ecparam -name prime256v1 -genkey | openssl pkey -text
 ```
-The zero's from the first openssl command prove that no private material came out of the hsm.
 
 ------
 What if your software needs pkcs11 information is a URI like the openssl command above? E.g. Knot.
 ```
 sudo apt install gnutls-bin
-sudo p11tool --provider /usr/lib/softhsm/libsofthsm2.so --list-all
+p11tool --provider /usr/lib/softhsm/libsofthsm2.so --list-tokens
+p11tool --provider /usr/lib/softhsm/libsofthsm2.so --list-all "pkcs11:token=Token1" # or use more complete url
 ```
 That should be a nice starting point I think.
 
@@ -137,13 +137,13 @@ echo -n 'nl.                  3600    IN      SOA     ns1.dns.nl
 ----------------
 In the real world, signatures are made on hashes, so:
 ```
-sudo pkcs11-tool --module /usr/lib/softhsm/libsofthsm2.so --token Token1 --mechanism SHA256 --hash -i soa.txt -o soa.hash
+pkcs11-tool --module /usr/lib/softhsm/libsofthsm2.so --token Token1 --mechanism SHA256 --hash -i soa.txt -o soa.hash
 ```
 
 -------------------
 Signing needs keys, so we use the keys we made earlier:
 ```
-sudo pkcs11-tool --module /usr/lib/softhsm/libsofthsm2.so --token Token1 --sign --id 2 --mechanism ECDSA -i soa.hash -o soa.sig
+pkcs11-tool --module /usr/lib/softhsm/libsofthsm2.so --token Token1 --sign --id 2 --mechanism ECDSA -i soa.hash -o soa.sig
 ```
 Needs PIN, you should know why.
 
@@ -157,7 +157,7 @@ That looks remarkably like an EC RRSIG!
 ---------------
 Let's verify:
 ```
-sudo pkcs11-tool --module /usr/lib/softhsm/libsofthsm2.so --token Token1 --id 2 --verify -m ECDSA -i soa.hash --signature-file soa.sig
+pkcs11-tool --module /usr/lib/softhsm/libsofthsm2.so --token Token1 --id 2 --verify -m ECDSA -i soa.hash --signature-file soa.sig
 ```
 That should work, no PIN needed
 
