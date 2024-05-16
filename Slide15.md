@@ -1,11 +1,11 @@
 -----------------------------
 ## PKCS#11
-The PKCS#11 standard defines a programming interface to create and
+The PKCS#11 standard **defines a programming interface** to create and
 manipulate cryptographic tokens.\
 Also known as "Cryptoki".
 [PKCS#11 illustrated](https://github.com/tpm2-software/tpm2-pkcs11/blob/master/docs/illustrations/pkcs11_api_classification.png)\
 Most HSMs implement a PKCS#11 API. So PKCS#11 can be used to talk to
-an HSM.\
+an HSM.
 
 Linuxes have the opensc package that contains the pksc11-tool for use on the cli.\
 **Please note:** HSMs implement a PKCS#11 API but also offer vendor specific tools (like softhsm2-util), you sometimes can accomplish things using both paths!
@@ -24,8 +24,8 @@ E.g. Firefox, OpenVPN, OpenSSL, OpenSSH, Oracle DB, Gnome Keyring as
 clients, and SoftHSM as server.\
 Lots of programming languages have a library for PKCS11.
 
-All of PKCS#11 works via a library/"driver" (.dll or .so) often called
-"Module".
+**All of PKCS#11 works via a library/"driver" (.dll or .so) often called
+"Module".**
 
 -----------------
 ## Exercise "Introducing pkcs11-tool from opensc package & hash"
@@ -37,26 +37,26 @@ Note: If you're serious you'd better use the pkcs11 libraries
 of your favorite programming language.
 ```
 sudo apt install opensc xxd
-sudo pkcs11-tool --module /usr/lib/softhsm/libsofthsm2.so --show-info
+(sudo) pkcs11-tool --module /usr/lib/softhsm/libsofthsm2.so --show-info
 ```
-Info about the HSM, observe how it is linked to softhsm by library, more info than softhsm2-util.
+Info about the HSM, **observe how it is linked to softhsm by library**, more info than softhsm2-util.
 
 -----------
 ```
-sudo pkcs11-tool --module /usr/lib/softhsm/libsofthsm2.so --list-slots
+(sudo) pkcs11-tool --module /usr/lib/softhsm/libsofthsm2.so --list-slots
 ```
 Like softhsm2-util --show-slots. Run as root it shows all slots of all users, but if run as non-root, pkcs11-tool shows only own tokens)
 
 ------------------
 ```
-sudo pkcs11-tool --module /usr/lib/softhsm/libsofthsm2.so --list-mechanisms
+pkcs11-tool --module /usr/lib/softhsm/libsofthsm2.so --list-mechanisms
 ```
 Show all crypto operations an HSM can do. Different HSMs differ!
 
 -----------------
 ```
 echo -n blah > blah.txt
-sudo pkcs11-tool --module /usr/lib/softhsm/libsofthsm2.so --token Token1 --mechanism SHA256 --hash -i blah.txt | xxd -p -c 64
+pkcs11-tool --module /usr/lib/softhsm/libsofthsm2.so --token Token1 --mechanism SHA256 --hash -i blah.txt | xxd -p -c 64
 sha256sum blah.txt
 ```
 Like sha256sum en openssl, your token can hash.
