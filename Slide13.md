@@ -12,9 +12,9 @@ standard PKCS#11 "language" (PKCS11: more below):\
 Looks like AWS is ahead of the others.\
 Unfortunately I did not have the resources or the opportunity to experiment
 with these yet.\
-However, I did find this friendly lady that does a demo/lab (in 138 easy steps!):
+However, I did find this friendly lady that does an AWS CloudHSM demo/lab (in 138 easy steps!):
 [here](https://www.youtube.com/watch?v=Y6agOjSWAKU)\
-If you're more of a reader:
+Or if you're more of a reader:
 [here](https://docs.aws.amazon.com/cloudhsm/latest/userguide/introduction.html)
 
 Cloudflare (but may also apply to on-prem and other cloud services, in
