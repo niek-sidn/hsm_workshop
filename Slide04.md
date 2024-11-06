@@ -3,6 +3,7 @@
 An HSM can be:
 -   A networked hardware appliance like the Thales Luna
 -   A locally running piece of software on a server, like [SoftHSM](https://github.com/opendnssec/SoftHSMv2)
+-   Or [kryoptic](https://github.com/latchset/kryoptic/)
 -   A PCI card or USB device (e.g. YubiHSM)
 -   A cloud service or cloud managed device
 -   A docker/podman container (NitroKey has one: [NetHSM](https://hub.docker.com/r/nitrokey/nethsm))
