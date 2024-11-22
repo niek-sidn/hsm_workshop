@@ -2,7 +2,7 @@ This is work in progress
 
 [https://github.com/latchset/kryoptic/](https://github.com/latchset/kryoptic/)  
 For the first steps you can follow the Readme.  
-This does not yet result is a working software-HSM!  
+This does not yet result in a working software-HSM!  
 
 After building do a `cargo install --path .` for a smaller (stripped?) .so in the "released" directory.
 
