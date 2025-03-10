@@ -22,7 +22,7 @@
     double id\'s and labels = not an error to the HSM.\
     Later you can tell the HSM "Use key-id X to sign this data Y I'm
     giving you, and hand me back the result".\
-    Think of OpenDNSsec or BIND in a DNSSEC context: "sign RR 'nl. IN
+    Think of OpenDNSSEC or BIND in a DNSSEC context: "sign RR 'nl. IN
     SOA 3600 .....' with key id 10212".\
     The HSM will reply with the signature, that needs to be processed by
     the calling software into an RRSIG.
