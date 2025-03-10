@@ -1,6 +1,6 @@
 Available tooling: api, library/driver, gui, cli, cloud-integration\
 Available tooling: configurable by you or as-is product\
-Available tooling: Fitting prefered tooling at your organisatien (e.g. OpenDNSsec, BIND)\
+Available tooling: Fitting prefered tooling at your organisatien (e.g. OpenDNSSEC, BIND)\
 Available tooling: public (api-accessible?) repo vs. sign-in required\
 Available tooling: tooling available for OS(version) we want? packaged or unicorn-install?\
 Available tooling: version information available? How are new versions communicated?\
