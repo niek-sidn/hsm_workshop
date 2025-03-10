@@ -56,7 +56,7 @@ There is no time to explain things beyond HSM\'s, so you should:
     encryption is.
 -   know that you can also do digital signing with a public-private
     key-pair.
-    (that is basically what DNSsec signing is all about).
+    (that is basically what DNSSEC signing is all about).
 -   use youtube if you lack this knowledge.
 
 -------------------------
