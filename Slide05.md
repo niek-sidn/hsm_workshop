@@ -30,4 +30,4 @@ Different HSM's do or do not have:
 In most cases, an HSM is contacted through an .so module (let's call it a "driver")
 
 ---------------------------
-[Next](https://github.com/niek-sidn/hsm_workshop/blob/main/Slide06.md)
+[Next](https://github.com/niek-sidn/hsm_workshop/blob/main/Slide05b.md)
