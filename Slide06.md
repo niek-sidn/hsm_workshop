@@ -39,7 +39,7 @@ echo $RANDOM
 You got 9438 and 11869 , didn't you?
 
 ---
-Now do *both* previous exercises again!
+*Now do **both** previous exercises again!*
 
 /dev/urandom generates a predictable, repeatable set of pseudo-random numbers.\
 The begin argument is a starting point, and this can of course be a piece of "good" random from the pool.\
