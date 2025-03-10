@@ -18,7 +18,7 @@ Paranoia bonus: you could keep your KSK, or a root-certificate
 completely off-line, or even on a stick in a safe (until needed for
 signing a new DNSKEY RRset)
 
-E.g. the initialization vector (IV) of AES is a salt.
+E.g. the initialization vector (IV) of AES could be considered a form of salting.
 
 ---------------------
 ## Exercise "Cyberchef, your tool for all things crypto"
