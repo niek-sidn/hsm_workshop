@@ -13,7 +13,7 @@ Capacity: signing algorithms\
 Company policy/image: "best proven technology"\
 Company policy/image: "promote open source"\
 Company policy/image: "delivers 'Trust', befitting your company goal and public image.\
-Company policy/image: "keep up in-house DNSsec expertise, autonomy"\
+Company policy/image: "keep up in-house DNSSEC expertise, autonomy"\
 Continuity: hsm functionality networked or not\
 Continuity: key synchronization\
 Continuity: load balancing / High Availability / Active-Active\
