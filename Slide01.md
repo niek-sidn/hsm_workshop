@@ -5,7 +5,7 @@
     (maybe application) specialized in doing cryptographic operations.
 -   As such it is a "base of trust", that also stores the keys you wish to
     keep secret.\
-    This means no more storing keys on a host or VM that could have vulnerabilities. :+1:
+    This means no more storing keys on a host or VM that is publicly exposed to unknown users, and could have vulnerable services. :+1:
 -   Mostly used for: digital signing-validation and encryption-decryption.
 -   Important in our line of work: make DNSSEC RRSIGs using assymmetric encryption
     (using the private part of a key pair).
