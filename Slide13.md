@@ -25,7 +25,7 @@ For example (but all cloudhsm mentioned above are documented):\
 
 NitroHSM is a German company that is creating an open sourced HSM. It is
 hardware, but they also offer a containerized version of it (Docker/Podman)
-and a demo-server.\
+for testing and production, and a demo-server.\
 It is in an early stage, but if compliancy to a standard (FIPS) or
 tamperproofing is not your main goal, it could offer an off-server
 solution to "roll your own" HSM-oid.\
