@@ -1,3 +1,5 @@
+### Other considerations, e.g. when making a choice between software- or hardware- or cloud- HSM.
+
 Available tooling: api, library/driver, gui, cli, cloud-integration\
 Available tooling: configurable by you or as-is product\
 Available tooling: Fitting prefered tooling at your organisatien (e.g. OpenDNSSEC, BIND)\
@@ -64,7 +66,7 @@ Security: secure wipe of keys (decommission)\
 Security: small or bigger attack surface? lowest number of services/open ports?\
 Security: tamperproofness\
 Support: Do we get premium support or are we "just one of many customers".\
-Support: education available to keep you up-to-date? Best practise guides?\
+Support: Documentation/education available to keep you up-to-date? Best practise guides?\
 Support: help available, and under what conditions? 24x7x356? How fast?\
 Support: can bugfixes be submitted in an acceptable way, and will the be acted upon?\
 Support: on-line knowledge base, or all questions "call support"\
