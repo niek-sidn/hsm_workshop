@@ -3,7 +3,7 @@
 Arguments for using an HSM:
 
 -   **Trust & Safety**
-    -   DNSsec and TLS/SSL rely heavily on web of trust!
+    -   DNSSEC and TLS/SSL rely heavily on web of trust!
     -   Safe key storage, Keys never leave the HSM. Keys are not in memory on your servers.
     -   Safe processing, crypto is done in the HSM.
     -   Can you afford to be the weakest link in a chain? Other people could be dependend on you?
