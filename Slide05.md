@@ -13,6 +13,7 @@ Different HSM's do or do not have:
 -   a secured backup mechanism
 -   role based access, M of N based authentication, PEDs, or Password based.
 -   a form of customer support.
+-   a sales department that is focussed on your specific use case (What's DNSSEC?)
 -   exportable keys
 -   physical anti-theft (chained to the rack or a dangling USB key?).
 -   an api/library, gui, cli, cloud-integration, etc.
