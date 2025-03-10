@@ -18,13 +18,11 @@ Paranoia bonus: you could keep your KSK, or a root-certificate
 completely off-line, or even on a stick in a safe (until needed for
 signing a new DNSKEY RRset)
 
-E.g. the initialization vector (IV) of AES could be considered a form of salting.
-
 ---------------------
 ## Exercise "Cyberchef, your tool for all things crypto"
 Visit: [CyberChef](https://cyberchef.io/#recipe=AES_Decrypt(%7B'option':'UTF8','string':'my_key1234567890'%7D,%7B'option':'UTF8','string':'0000000000000000'%7D,'CBC','Hex','Raw',%7B'option':'Hex','string':''%7D,%7B'option':'Hex','string':''%7D)&input=NDBiNmJhMWM1ZDI0ZDkzZjEwYmFhZTkzYzRmN2E5NzNhOGQ5YzQ4MDBiYmUyZmM0MzRlMTZiMTVjNzNjYTUxZg)
 
-Now change the IV, but not the key and input.
+Now change the IV, but not the key and input. Here IV and salt differ.
 
 Have a look at the left, see what CyberChef can do for you.
 
