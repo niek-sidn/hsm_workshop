@@ -14,8 +14,8 @@
     into the HSM. (but is a key outside your HSM really what you want?\
     And does your HSM even offer an import function?)\
     Another way could be that you mark a key as exportable/extractable,
-    see documentation YMMV.
--   Beware! A "create key" command will not even hand you back an id or label of a key or
+    see your HSM documentation, YMMV.
+-   Beware! A "create key" command will, in general, not even hand you back an id or label of a key or
     key-pair.\
     You (or your software) has to provide and store an id and/or label
     when creating a key, the HSM will store the attributes with the key,
@@ -28,7 +28,7 @@
     the calling software into an RRSIG.
 -   An HSM is not a device that builds your zonefile: lots of RR's in
     the NL zonefile aren't even signed, e.g. not authoritative for NS
-    and glue! Other software has to assemble the zonefile from RR's and
+    and glue of subdomains! Other software has to assemble the zonefile from RR's and
     RRSIG's.
 -   An HSM is not a device that does key management, like roll overs and
     expiry. Other software has to instruct the HSM to create and delete
