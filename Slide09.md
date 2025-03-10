@@ -11,12 +11,12 @@ Arguments for using an HSM:
 -   Interesting for **trusted (cloud)computing** (encrypted RAM for VM's in "half-trusted" environment)
 -   When moving to the cloud: Possibly a way to **avoid breaking agreements**, maybe even avoid legal risks.
 -   **Outsourcing**: the most cpu-intensive crypto processing to the most
-    capable party "offloading"\
+    capable hardware ("offloading")\
     Let your server focus on other stuff. An HSM could maybe handle tens
     of thousands of signatures per second
 -   **HA and active-active** are very nice features, could have their own
     use cases.\
-    E.g. a new key on HA-HSM1 will be propagated to HA-HSM2 as well  
+    E.g. a new key on HA-HSM1 will be propagated to HA-HSM2 as well.  
 -   **Easy audits**. No need to explain how you secure your keys, because
     the HSM does all this for you and auditors are familiar with them.
 
