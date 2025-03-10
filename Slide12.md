@@ -28,7 +28,7 @@ No need to keep it running, you can always restore and decrypt on a new instance
 Beware: Deployment can take a lot of minutes, so "throw-away" HSM's are maybe not such an attractive scenario.
 
 Tamperproofness/Compliancy for all cloud hsm's is based on trusting the cloud hsm's provider and it's certifications\
-(Alibaba CloudHSM anyone? Come on! Looks like a 1-on-1 copy of AWS, so what's keeping you?)
+(Alibaba CloudHSM looks like a 1-on-1 copy of AWS. Knowing that it could be technically equivalent, are you considering them as a supplier?)
 
 ----------------
 [Next](https://github.com/niek-sidn/hsm_workshop/blob/main/Slide13.md)
