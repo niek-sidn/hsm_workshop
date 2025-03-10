@@ -7,7 +7,7 @@ This module handles all encryption and signing, also stores the keys (or
 maybe a key to all keys).\
 All "other stuff" like e.g. networking and api-interfacing is handled
 by parts outside this crypto module.\
-The crypto module in most cases has a very limited interface.
+The crypto module in most cases has a very limited interface, you are probably not allowed to log into it.
 
 An HSM should contain an **HRNG** (hardware random number generator),\
 because key generation is very dependent on a good source of random numbers.
