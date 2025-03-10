@@ -70,3 +70,5 @@ Support: can bugfixes be submitted in an acceptable way, and will the be acted u
 Support: on-line knowledge base, or all questions "call support"\
 Support: open source, code accessible\
 Support: Support "more or less in person" or ticketing\
+
+[Next](https://github.com/niek-sidn/hsm_workshop/blob/main/Slide06.md)
