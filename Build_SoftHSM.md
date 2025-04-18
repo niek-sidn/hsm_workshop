@@ -11,7 +11,7 @@ yum install mlocate man -y && updatedb
 Prep for APT based systems
 -------------------
 apt update && apt upgrade
-apt install build-essential libssl-dev libsqlite3-dev autogen autoconf libtool plocate
+apt install -y --no-install-recommends build-essential libssl-dev libsqlite3-dev autogen autoconf libtool plocate automake
 -------------------
 
 
